@@ -76,12 +76,12 @@ model Verification {
 }
 
 model Profile {
-  id        String  @id
-  userId String  @unique
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  username String
+  id          String  @id @default(uuid())
+  userId      String  @unique
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username    String
   displayName String
-  profilePic String?
+  profilePic  String?
 
   @@map("profile")
 }
