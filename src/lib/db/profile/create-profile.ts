@@ -1,7 +1,7 @@
 import { NewProfile } from "@/lib/types";
 import prisma from "../prisma";
 
-export default async function createProfile(profile: NewProfile) {
+export default async function createProfileRecord(profile: NewProfile) {
     try {
         prisma.profile.create({
             data: profile,
