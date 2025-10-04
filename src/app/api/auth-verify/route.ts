@@ -2,9 +2,9 @@ import { auth } from "@/lib/auth";
 import { getProfileRecord } from "@/lib/db/profile/get-profile";
 import { AuthStatus } from "@/lib/types";
 import { headers } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(request:NextRequest){
+export async function GET(){
     try{
         const session = await auth.api.getSession({
             headers: await headers()
