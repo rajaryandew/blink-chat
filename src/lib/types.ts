@@ -12,3 +12,10 @@ export interface Profile extends ProfileBase {
     userId: string;
     id: number;
 }
+
+export enum AuthStatus{
+    notAuthenticated,
+    authenticated,
+    incompleteProfile,
+    errorFindingStatus
+}
