@@ -1,14 +1,25 @@
-"use client"
-import { signupWithGoogle } from "@/lib/signup-actions";
+"use client";
+import { signup } from "@/lib/signup-action";
 import GoogleLogo from "../svgs/google";
 import { Button } from "../ui/button";
 
-export default function GoogleLoginButton(){
+export default function SignupButton({
+    provider,
+    logo,
+    text
+}: {
+    provider: string,
+    text:string,
+    logo: React.ReactNode
+}) {
     return (
-        <Button variant="secondary" type="button" onClick={signupWithGoogle}>
-            <GoogleLogo
-             />
-            Google
+        <Button
+            variant="secondary"
+            type="button"
+            onClick={() => signup(provider)}
+        >
+            {logo}
+            {text}
         </Button>
     );
 }

@@ -1,8 +1,8 @@
 import { authClient } from "./auth/auth-client";
 
-export async function signupWithGoogle(){
+export async function signup(provider: string){
     await authClient.signIn.social({
-        provider:"google",
+        provider,
         callbackURL: "/app",
         errorCallbackURL:"/auth-error",
         newUserCallbackURL:"/create-profile"
