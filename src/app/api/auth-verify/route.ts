@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth/auth";
 import { getProfileRecord } from "@/lib/db/profile/get-profile";
 import { AuthStatus } from "@/lib/types";
 import { headers } from "next/headers";

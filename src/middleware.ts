@@ -3,7 +3,9 @@ import { AuthStatus } from "./lib/types";
 
 export default async function middleare(request: NextRequest) {
     const baseURL = request.nextUrl.origin;
-    const response = await fetch(`${baseURL}/api/auth-verify`);
+    const response = await fetch(`${baseURL}/api/auth-verify`, {
+        headers: request.headers,
+    });
     const { authStatus }: { authStatus: AuthStatus } = await response.json();
 
     if (authStatus === AuthStatus.authenticated) {
@@ -17,11 +19,11 @@ export default async function middleare(request: NextRequest) {
             `${baseURL}/create-profile`
         );
         return redirectResponse;
-    } else if(authStatus === AuthStatus.errorFindingStatus) {
+    } else if (authStatus === AuthStatus.errorFindingStatus) {
         const redirectResponse = NextResponse.redirect(`${baseURL}/auth-error`);
         return redirectResponse;
     }
-    return NextResponse.next()
+    return NextResponse.next();
 }
 
 export const config: MiddlewareConfig = {
