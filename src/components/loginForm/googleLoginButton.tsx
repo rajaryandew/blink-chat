@@ -1,6 +1,5 @@
 "use client";
 import { signup } from "@/lib/signup-action";
-import GoogleLogo from "../svgs/google";
 import { Button } from "../ui/button";
 
 export default function SignupButton({
