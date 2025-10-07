@@ -1,7 +1,7 @@
 import { MiddlewareConfig, NextRequest, NextResponse } from "next/server";
 import { AuthStatus } from "./lib/types";
 
-export default async function middleare(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
     const baseURL = request.nextUrl.origin;
     const response = await fetch(`${baseURL}/api/auth-verify`, {
         headers: request.headers,
