@@ -8,24 +8,37 @@ export default async function middleware(request: NextRequest) {
     });
     const { authStatus }: { authStatus: AuthStatus } = await response.json();
 
-    if (authStatus === AuthStatus.authenticated) {
-        const redirectResponse = NextResponse.redirect(`${baseURL}/app`);
-        return redirectResponse;
-    } else if (authStatus === AuthStatus.notAuthenticated) {
-        const redirectResponse = NextResponse.redirect(`${baseURL}`);
-        return redirectResponse;
-    } else if (authStatus === AuthStatus.incompleteProfile) {
-        const redirectResponse = NextResponse.redirect(
-            `${baseURL}/create-profile`
-        );
-        return redirectResponse;
-    } else if (authStatus === AuthStatus.errorFindingStatus) {
-        const redirectResponse = NextResponse.redirect(`${baseURL}/auth-error`);
-        return redirectResponse;
+    if (request.nextUrl.pathname === "/") {
+        switch (authStatus) {
+            case AuthStatus.authenticated:
+                NextResponse.redirect(`${baseURL}/app`);
+            case AuthStatus.incompleteProfile:
+                NextResponse.redirect(`${baseURL}/create-profile`);
+            default:
+                break;
+        }
+    } else {
+        if (authStatus === AuthStatus.authenticated) {
+            const redirectResponse = NextResponse.redirect(`${baseURL}/app`);
+            return redirectResponse;
+        } else if (authStatus === AuthStatus.notAuthenticated) {
+            const redirectResponse = NextResponse.redirect(`${baseURL}`);
+            return redirectResponse;
+        } else if (authStatus === AuthStatus.incompleteProfile) {
+            const redirectResponse = NextResponse.redirect(
+                `${baseURL}/create-profile`
+            );
+            return redirectResponse;
+        } else if (authStatus === AuthStatus.errorFindingStatus) {
+            const redirectResponse = NextResponse.redirect(
+                `${baseURL}/auth-error`
+            );
+            return redirectResponse;
+        }
     }
     return NextResponse.next();
 }
 
 export const config: MiddlewareConfig = {
-    matcher: ["/create-profile/", "/app", "/app/:path*"],
+    matcher: ["/", "/create-profile/", "/app", "/app/:path*"],
 };
