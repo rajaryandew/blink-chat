@@ -16,16 +16,17 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  profile       Profile?
+  id              String            @id
+  name            String
+  email           String
+  emailVerified   Boolean           @default(false)
+  image           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now()) @updatedAt
+  sessions        Session[]
+  accounts        Account[]
+  profile         Profile?
+  chatParticipant ChatParticipant[]
 
   @@unique([email])
   @@map("user")
@@ -79,10 +80,47 @@ model Verification {
 model Profile {
   id          String  @id @default(uuid())
   userId      String  @unique
-  user        User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   username    String
   displayName String
   profilePic  String?
 
   @@map("profile")
+}
+
+enum ChatType {
+  DIRECT_MESSAGE
+  GROUP_CHAT
+}
+
+model Chat {
+  id               String            @id @default(uuid())
+  createdAt        DateTime          @default(now())
+  chatType         ChatType          @default(DIRECT_MESSAGE)
+  chatName         String?
+  chatParticipants ChatParticipant[]
+  messages         Message[]
+}
+
+model ChatParticipant {
+  id       Int       @id @default(autoincrement())
+  chatId   String
+  chat     Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages Message[]
+}
+
+enum SeenStatus{
+  SEEN
+  SENT
+}
+model Message {
+  id                  Int             @id @default(autoincrement())
+  chatId              String
+  chat                Chat            @relation(fields: [chatId], references: [id])
+  senderParticipantId Int
+  senderParticipant   ChatParticipant @relation(fields: [senderParticipantId], references: [id])
+  sentAt DateTime @default(now())
+  seenStatus SeenStatus @default(SENT)
 }
