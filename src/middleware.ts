@@ -11,9 +11,9 @@ export default async function middleware(request: NextRequest) {
     if (request.nextUrl.pathname === "/") {
         switch (authStatus) {
             case AuthStatus.authenticated:
-                NextResponse.redirect(`${baseURL}/app`);
+                return NextResponse.redirect(`${baseURL}/app`);
             case AuthStatus.incompleteProfile:
-                NextResponse.redirect(`${baseURL}/create-profile`);
+                return NextResponse.redirect(`${baseURL}/create-profile`);
             default:
                 break;
         }
