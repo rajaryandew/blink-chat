@@ -18,7 +18,7 @@ export default async function middleware(request: NextRequest) {
                 break;
         }
     } else {
-        if (authStatus === AuthStatus.authenticated) {
+        if (authStatus === AuthStatus.authenticated && !request.nextUrl.pathname.startsWith("/app")) {
             const redirectResponse = NextResponse.redirect(`${baseURL}/app`);
             return redirectResponse;
         } else if (authStatus === AuthStatus.notAuthenticated) {

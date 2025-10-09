@@ -3,7 +3,7 @@ import prisma from "../prisma";
 
 export default async function createProfileRecord(profile: NewProfile) {
     try {
-        prisma.profile.create({
+        await prisma.profile.create({
             data: profile,
         });
     } catch {
