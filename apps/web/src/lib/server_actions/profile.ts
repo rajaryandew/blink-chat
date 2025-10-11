@@ -1,7 +1,7 @@
 "use server"
 import { headers } from "next/headers";
 import { auth } from "../auth/auth";
-import createProfileRecord from "../db/profile/create-profile";
+import createProfileRecord from "../db/profile";
 import { NewProfile } from "../types";
 
 export async function createProfile(formData: FormData){

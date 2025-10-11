@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth/auth";
-import { getProfileRecord } from "@/lib/db/profile/get-profile";
+import { getProfileRecord } from "@/lib/db/profile";
 import { AuthStatus } from "@/lib/types";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
