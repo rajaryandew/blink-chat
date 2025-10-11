@@ -91,6 +91,7 @@ model Profile {
 enum ChatType {
   DIRECT_MESSAGE
   GROUP_CHAT
+
   @@map("chat_type")
 }
 
@@ -101,6 +102,7 @@ model Chat {
   chatName         String?
   chatParticipants ChatParticipant[]
   messages         Message[]
+
   @@map("chat")
 }
 
@@ -111,21 +113,27 @@ model ChatParticipant {
   userId   String
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   messages Message[]
+
+  @@unique([userId, chatId])
   @@map("chat_participant")
 }
 
-enum SeenStatus{
+enum SeenStatus {
   SEEN
   SENT
+
   @@map("seen_status")
 }
+
 model Message {
   id                  Int             @id @default(autoincrement())
+  data                String
   chatId              String
   chat                Chat            @relation(fields: [chatId], references: [id])
   senderParticipantId Int
   senderParticipant   ChatParticipant @relation(fields: [senderParticipantId], references: [id])
-  sentAt DateTime @default(now())
-  seenStatus SeenStatus @default(SENT)
+  sentAt              DateTime        @default(now())
+  seenStatus          SeenStatus      @default(SENT)
+
   @@map("message")
 }
