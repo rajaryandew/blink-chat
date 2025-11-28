@@ -1,3 +1,8 @@
 {
   "extends": "@repo/typescript-config/base",
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "es6",
+    "moduleResolution": "bundler"
+  }
 }
