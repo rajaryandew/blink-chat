@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type":"module",
   "scripts": {
-    "build": "prisma migrate deploy"
+    "build": "prisma generate && prisma migrate deploy"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
