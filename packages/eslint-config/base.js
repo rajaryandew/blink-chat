@@ -22,11 +22,6 @@ export const config = [
     },
   },
   {
-    plugins: {
-      onlyWarn,
-    },
-  },
-  {
     ignores: ["dist/**"],
   },
 ];

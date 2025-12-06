@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "@repo/database/prisma-client";
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "./config";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "@/lib/config";
 
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
