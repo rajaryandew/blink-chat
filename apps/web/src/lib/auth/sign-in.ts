@@ -7,6 +7,6 @@ export async function socialSignIn(provider: string) {
         provider,
         callbackURL: "/app",
         errorCallbackURL: "/login-error",
-        newUserCallbackURL: "/create-profile",
+        newUserCallbackURL: "/auth/create-profile",
     });
 }
