@@ -1,5 +1,4 @@
 import CreateProfileForm from "@/components/create-profile/create-profile-form";
-import { LoginForm } from "@/components/login/login-form";
 import { GalleryVerticalEnd } from "lucide-react";
 
 export default function CreateProfilePage(){
