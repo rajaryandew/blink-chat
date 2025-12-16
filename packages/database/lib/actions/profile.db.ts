@@ -1,7 +1,7 @@
 import { CreateProfileInput, Profile } from "@repo/schema/profile";
 import { prisma } from "../prisma";
 
-export async function CreateProfileRecord(profileInput:CreateProfileInput,userId:string){
+export async function createProfile(profileInput:CreateProfileInput,userId:string){
     try {
         const profile:Profile = await prisma.profile.create({
             data:{
