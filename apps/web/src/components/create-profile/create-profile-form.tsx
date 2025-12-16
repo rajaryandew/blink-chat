@@ -1,14 +1,23 @@
+"use client";
 import { Button } from "../ui/button";
-import {
-    Field,
-    FieldGroup,
-    FieldLabel,
-} from "../ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
+import { useForm } from "react-hook-form";
+import { CreateProfileInput, createProfileSchema } from "@repo/schema/profile";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function CreateProfileForm() {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<CreateProfileInput>({
+        resolver: zodResolver(createProfileSchema),
+    });
+
     return (
-        <form className="flex flex-col gap-6">
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit((data) => console.log(data))}> 
             <FieldGroup>
                 <div className="flex flex-col items-center gap-1 text-center">
                     <h1 className="text-2xl font-bold">Create new Profile</h1>
@@ -19,15 +28,15 @@ export default function CreateProfileForm() {
                 <Field>
                     <FieldLabel htmlFor="username">Username*</FieldLabel>
                     <Input
-                        id="username"
-                        type="text"
+                        {...register("username")}
                         placeholder="john_doe123"
-                        required
                     />
+                    <FieldError>{errors.username?.message}</FieldError>
                 </Field>
                 <Field>
-                    <FieldLabel htmlFor="display_name">Display name</FieldLabel>
-                    <Input id="display_name" type="text"/>
+                    <FieldLabel htmlFor="displayName">Display name</FieldLabel>
+                    <Input {...register("displayName")}/>
+                    <FieldError>{errors.displayName?.message}</FieldError>
                 </Field>
                 <Field>
                     <Button type="submit">Continue</Button>
