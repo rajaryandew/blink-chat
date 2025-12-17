@@ -3,11 +3,16 @@ import * as z from "zod";
 export const profileSchema = z.object({
     id: z.uuid(),
     userId: z.string(),
-    username: z.string().min(1, { error: "Username is required!!" }),
+    username: z
+        .string()
+        .trim()
+        .min(1, { error: "Username is required!!" })
+        .regex(/^\S+$/, { message: "Username cannot contain whitespace" }),
     displayName: z
         .string()
-        .min(5, { error: "Display name is too short!" })
-        .max(50, { error: "Display name is too long!" })
+        .trim()
+        .max(50, "Display name is too long")
+        .transform((v) => (v === "" ? null : v))
         .nullish(),
     profilePic: z.url().nullish(),
 });
