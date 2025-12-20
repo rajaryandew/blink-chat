@@ -38,6 +38,9 @@ importers:
       '@repo/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@repo/error':
+        specifier: workspace:*
+        version: link:../../packages/error
       '@repo/schema':
         specifier: workspace:*
         version: link:../../packages/schema
@@ -123,6 +126,9 @@ importers:
       '@prisma/client':
         specifier: ^7.0.0
         version: 7.0.0(prisma@7.0.0(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(typescript@5.9.2)
+      '@repo/error':
+        specifier: workspace:*
+        version: link:../error
       '@repo/schema':
         specifier: workspace:*
         version: link:../schema
@@ -145,6 +151,12 @@ importers:
       prisma:
         specifier: ^7.0.0
         version: 7.0.0(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+
+  packages/error:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
 
   packages/eslint-config:
     devDependencies:

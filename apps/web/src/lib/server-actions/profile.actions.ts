@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import {createProfile} from "@repo/database/profile"
 import { redirect } from "next/navigation";
 
+import {AppError} from "@repo/error"
 
 
 export async function createProfileAction(data: CreateProfileInput) {
@@ -24,8 +25,8 @@ export async function createProfileAction(data: CreateProfileInput) {
             console.log(result.error)
         }
         
-    } catch (error) {
-        console.log(error)
+    } catch (err) {
+        throw err
     }
     if(profile){
         redirect("/app")

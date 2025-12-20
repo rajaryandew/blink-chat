@@ -32,7 +32,8 @@
     "react-hook-form": "^7.68.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
-    "@repo/schema":"workspace:*"
+    "@repo/schema":"workspace:*",
+    "@repo/error":"workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

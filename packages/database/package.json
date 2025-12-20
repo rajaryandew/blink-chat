@@ -17,7 +17,8 @@
     "@prisma/client": "^7.0.0",
     "dotenv": "^17.2.3",
     "pg": "^8.16.3",
-    "@repo/schema": "workspace:*"
+    "@repo/schema": "workspace:*",
+    "@repo/error":"workspace:*"
   },
   "exports":{
     "./profile": "./lib/actions/profile.db.ts",
