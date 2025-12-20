@@ -11,13 +11,13 @@ export default function CreateProfileForm() {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<CreateProfileInput>({
         resolver: zodResolver(createProfileSchema),
     });
 
     return (
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit(createProfileAction)} method="post"> 
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit(createProfileAction)}>
             <FieldGroup>
                 <div className="flex flex-col items-center gap-1 text-center">
                     <h1 className="text-2xl font-bold">Create new Profile</h1>
@@ -35,11 +35,13 @@ export default function CreateProfileForm() {
                 </Field>
                 <Field>
                     <FieldLabel htmlFor="displayName">Display name</FieldLabel>
-                    <Input {...register("displayName")}/>
+                    <Input {...register("displayName")} />
                     <FieldError>{errors.displayName?.message}</FieldError>
                 </Field>
                 <Field>
-                    <Button type="submit">Continue</Button>
+                    <Button type="submit" disabled={isSubmitting}>
+                        Continue
+                    </Button>
                 </Field>
             </FieldGroup>
         </form>
