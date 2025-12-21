@@ -1,12 +1,12 @@
 import { DatabaseErrorCode } from "./error.types"
 
 export class AppError extends Error{
-    code:string
+    meta:Record<string,unknown[] | null>
     cause?:unknown
 
-    constructor(code:string,message:string,cause:Error){
+    constructor(message:string,meta:Record<string,unknown[] | null>,cause?:Error){
         super(message)
-        this.code = code
+        this.meta = meta
         this.cause = cause
     }
 }
@@ -14,10 +14,12 @@ export class AppError extends Error{
 export class DatabaseError extends Error{
     code:DatabaseErrorCode
     cause?: unknown
+    meta?:Record<string,unknown>
 
-    constructor(code:DatabaseErrorCode,cause?:unknown){
+    constructor(code:DatabaseErrorCode,cause?:unknown,meta?:Record<string,unknown>){
         super(code)
         this.code = code
         this.cause = cause
+        this.meta = meta
     }
 }
