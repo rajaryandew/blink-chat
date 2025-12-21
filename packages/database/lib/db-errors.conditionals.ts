@@ -7,34 +7,44 @@ export function mapDatabaseError(err: unknown) {
     if (err instanceof PrismaClientKnownRequestError) {
         switch (err.code) {
             case "P2002":
+                const fields = Array.isArray(err.meta?.target)
+                    ? err.meta?.target
+                    : [];
                 return new DatabaseError(
                     DatabaseErrorCode.UNIQUE_CONSTRAINT,
                     error,
-                    err.meta
+                    { fields }
                 );
             case "P2003":
                 return new DatabaseError(
                     DatabaseErrorCode.FOREIGN_KEY_VIOLATION,
                     error,
-                    err.meta
+                    {
+                        field:err.meta?.field_name,
+                        table:err.meta?.table_name
+                    }
                 );
             case "P2011":
                 return new DatabaseError(
                     DatabaseErrorCode.CONSTRAINT_VIOLATION,
                     error,
-                    err.meta
+                    {
+                        constraint:err.meta?.constraint_name,
+                        table:err.meta?.table
+                    }
                 );
             case "P2001":
                 return new DatabaseError(
                     DatabaseErrorCode.RECORD_NOT_FOUND,
                     error,
-                    err.meta
+                    {
+                        table:err.meta?.model
+                    }
                 );
             case "P1001":
                 return new DatabaseError(
                     DatabaseErrorCode.DB_CONNECTION_ERROR,
-                    error,
-                    err.meta
+                    error
                 );
         }
     }
