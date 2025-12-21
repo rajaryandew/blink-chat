@@ -1,5 +1,6 @@
 import { CreateProfileInput, Profile } from "@repo/schema/profile";
 import { prisma } from "../prisma";
+import { mapDatabaseError } from "../db-errors.conditionals";
 
 export async function createProfile(profileInput:CreateProfileInput,userId:string){
     try {
@@ -10,7 +11,8 @@ export async function createProfile(profileInput:CreateProfileInput,userId:strin
             }
         })
         return profile
-    } catch (error) {
-        throw error
+    } catch (err) {
+        const mappedError = mapDatabaseError(err)
+        throw mappedError
     }
 }
