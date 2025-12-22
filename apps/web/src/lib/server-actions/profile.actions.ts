@@ -1,34 +1,72 @@
-"use server"
-import { CreateProfileInput, createProfileSchema, Profile } from "@repo/schema/profile";
+"use server";
+import { CreateProfileInput, createProfileSchema } from "@repo/schema/profile";
 import { auth } from "../auth/auth";
 import { headers } from "next/headers";
-import {createProfile} from "@repo/database/profile"
-import { redirect } from "next/navigation";
+import { createProfile } from "@repo/database/profile";
 
-import {AppError} from "@repo/error"
+import { AppError, DatabaseError } from "@repo/error";
+import { CreateProfileResponse } from "../types/profile-actions.types";
+import { DatabaseErrorCode } from "@repo/error/types";
 
-
-export async function createProfileAction(data: CreateProfileInput) {
-
+export async function createProfileAction(
+    data: CreateProfileInput
+): Promise<CreateProfileResponse> {
     const session = await auth.api.getSession({
         headers: await headers(),
     });
+    const result = createProfileSchema.safeParse(data);
 
-    let profile:Profile | undefined;
+    if (!session) {
+        return { ok: false, error: new AppError("SESSION_INVALID") };
+    }
+    if (!result.success) {
+        return {
+            ok: false,
+            error: new AppError("VALIDATION_FAILED", {
+                meta: result,
+            }),
+        };
+    }
 
     try {
-        const result = createProfileSchema.safeParse(data)
-    
-        if(result.success && session){
-            profile = await createProfile(result.data,session?.session.userId)
-        } else{
-            console.log(result.error)
+        await createProfile(result.data, session.session.userId);
+    } catch (e) {
+        const error = e as DatabaseError;
+        switch (error.code) {
+            case DatabaseErrorCode.UNIQUE_CONSTRAINT:
+                return {
+                    ok: false,
+                    error: new AppError("USERNAME_TAKEN", {
+                        meta: error.meta,
+                        cause: error,
+                    }),
+                };
+            case DatabaseErrorCode.CONSTRAINT_VIOLATION:
+                return {
+                    ok: false,
+                    error: new AppError("MISSING_FIELDS", {
+                        meta: error.meta,
+                        cause: error,
+                    }),
+                };
+            case DatabaseErrorCode.FOREIGN_KEY_VIOLATION:
+                return {
+                    ok: false,
+                    error: new AppError("USER_NOT_AVAILABLE", { cause: error }),
+                };
+            case DatabaseErrorCode.DB_CONNECTION_ERROR:
+                return {
+                    ok: false,
+                    error: new AppError("CONNECTION_FAILED", {
+                        cause: error,
+                    }),
+                };
+            default:
+                return {
+                    ok: false,
+                    error: new AppError("UNKNOWN_ERROR", { cause: error }),
+                };
         }
-        
-    } catch (err) {
-        throw err
     }
-    if(profile){
-        redirect("/app")
-    }
+    return { ok: true };
 }

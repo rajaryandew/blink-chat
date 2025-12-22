@@ -5,19 +5,20 @@ import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { CreateProfileInput, createProfileSchema } from "@repo/schema/profile";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createProfileAction } from "@/lib/server-actions/profile.actions";
+import { handleCreateProfile } from "@/lib/client-handlers/profile.handlers";
 
 export default function CreateProfileForm() {
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors, isSubmitting },
     } = useForm<CreateProfileInput>({
         resolver: zodResolver(createProfileSchema),
     });
 
     return (
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit(createProfileAction)}>
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit((data) => handleCreateProfile(data,setError))}>
             <FieldGroup>
                 <div className="flex flex-col items-center gap-1 text-center">
                     <h1 className="text-2xl font-bold">Create new Profile</h1>

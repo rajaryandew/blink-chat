@@ -6,12 +6,11 @@ export class AppError extends Error {
 
     constructor(
         message: string,
-        meta?: Record<string, unknown>,
-        cause?: Error
+        data?: { meta?: Record<string, unknown>; cause?: unknown } 
     ) {
         super(message);
-        this.meta = meta;
-        this.cause = cause;
+        this.meta = data?.meta;
+        this.cause = data?.cause;
     }
 }
 
