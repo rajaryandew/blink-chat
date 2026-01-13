@@ -13,10 +13,14 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^7.0.0",
+    "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
+    "@radix-ui/react-tooltip": "^1.2.8",
     "@repo/database": "workspace:*",
+    "@repo/error": "workspace:*",
+    "@repo/schema": "workspace:*",
     "@tailwindcss/postcss": "^4.1.17",
     "better-auth": "^1.4.1",
     "class-variance-authority": "^0.7.1",
@@ -31,9 +35,7 @@
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.68.0",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.17",
-    "@repo/schema":"workspace:*",
-    "@repo/error":"workspace:*"
+    "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

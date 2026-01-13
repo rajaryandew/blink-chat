@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { NextRequest, NextResponse, ProxyConfig } from "next/server";
 
 export async function proxy(request: NextRequest) {
