@@ -1,3 +1,4 @@
+"use client";
 import {
     CircleUser,
     GalleryVerticalEnd,
@@ -9,27 +10,30 @@ import {
     SidebarContent,
     SidebarFooter,
     SidebarHeader,
-} from "../ui/sidebar";
-import { Separator } from "../ui/separator";
+} from "../../ui/sidebar";
+import { Separator } from "../../ui/separator";
+import { redirect } from "next/navigation";
+import {
+    AppIcon,
+    MessageIcon,
+    ProfileIcon,
+    SettingsIcon,
+} from "./sidebar-icons";
 
 export function AppSidebar() {
-    const iconProps = {
-        strokeWidth: "1.5",
-        size: "35",
-    };
     return (
         <Sidebar className="py-6" variant="inset" collapsible="icon">
             <SidebarHeader className="mb-2 grid place-items-center">
-                <GalleryVerticalEnd {...iconProps} size={"30"} />
+                <AppIcon />
             </SidebarHeader>
             <Separator />
             <SidebarContent className="flex flex-col justify-start items-center gap-4 py-4">
-                <MessageSquare {...iconProps} size={"30"} />
+                <MessageIcon />
             </SidebarContent>
             <Separator />
             <SidebarFooter className="grid place-items-center my-6 gap-6">
-                <Settings {...iconProps} />
-                <CircleUser {...iconProps} />
+                <SettingsIcon />
+                <ProfileIcon />
             </SidebarFooter>
         </Sidebar>
     );
