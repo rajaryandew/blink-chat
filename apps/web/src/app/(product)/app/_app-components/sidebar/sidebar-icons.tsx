@@ -7,6 +7,9 @@ import {
     Settings,
 } from "lucide-react";
 import Link from "next/link";
+import { useContext } from "react";
+import { MessageTabContext } from "../../contexts";
+import { Button } from "@/components/ui/button";
 
 const iconProps = {
     strokeWidth: "1.5",
@@ -38,5 +41,10 @@ export function AppIcon() {
 }
 
 export function MessageIcon() {
-    return <MessageSquare {...iconProps} size={"30"} />;
+    const { setIsMessageTabOpen } =
+        useContext(MessageTabContext)!;
+
+    return (
+            <MessageSquare onClick={() => setIsMessageTabOpen((val) => !val)} {...iconProps} size={"28"} />
+    );
 }

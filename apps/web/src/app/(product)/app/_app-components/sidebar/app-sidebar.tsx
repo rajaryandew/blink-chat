@@ -1,18 +1,11 @@
 "use client";
 import {
-    CircleUser,
-    GalleryVerticalEnd,
-    MessageSquare,
-    Settings,
-} from "lucide-react";
-import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
     SidebarHeader,
-} from "../../ui/sidebar";
-import { Separator } from "../../ui/separator";
-import { redirect } from "next/navigation";
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 import {
     AppIcon,
     MessageIcon,
