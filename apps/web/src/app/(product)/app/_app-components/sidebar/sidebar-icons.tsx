@@ -1,15 +1,10 @@
 "use client";
 
-import {
-    CircleUser,
-    GalleryVerticalEnd,
-    MessageSquare,
-    Settings,
-} from "lucide-react";
+import { CircleUser, GalleryVerticalEnd, Settings } from "lucide-react";
 import Link from "next/link";
 import { useContext } from "react";
 import { MessageTabContext } from "../../contexts";
-import { Button } from "@/components/ui/button";
+import { MessageActive, MessageInactive } from "@/components/ui/icons";
 
 const iconProps = {
     strokeWidth: "1.5",
@@ -41,10 +36,17 @@ export function AppIcon() {
 }
 
 export function MessageIcon() {
-    const { setIsMessageTabOpen } =
+    const { isMessageTabOpen: isTabOpen, setIsMessageTabOpen } =
         useContext(MessageTabContext)!;
 
+    const props = {
+        ...iconProps,
+        size: "28",
+    };
+
     return (
-            <MessageSquare onClick={() => setIsMessageTabOpen((val) => !val)} {...iconProps} size={"28"} />
+        <div className="" onClick={() => setIsMessageTabOpen((val) => !val)}>
+            {isTabOpen ? <MessageActive /> : <MessageInactive />}
+        </div>
     );
 }

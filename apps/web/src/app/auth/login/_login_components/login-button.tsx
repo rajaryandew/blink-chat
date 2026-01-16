@@ -1,6 +1,6 @@
 "use client"
 import { socialSignIn } from "@/lib/auth/sign-in";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 export default function LoginButton({provider, icon}: {provider:string, icon: React.ReactNode}) {
     

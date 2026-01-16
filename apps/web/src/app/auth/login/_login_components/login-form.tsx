@@ -3,8 +3,8 @@ import {
     Field,
     FieldGroup,
 } from "@/components/ui/field";
-import LoginButton from "./login-button";
-import { GoogleIcon } from "./SVGs";
+import LoginButton from "@/components/login/login-button";
+import { GoogleIcon } from "@/app/auth/login/login_components/SVGs";
 
 export function LoginForm({
     className,

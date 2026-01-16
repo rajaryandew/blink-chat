@@ -1,11 +1,11 @@
 
-import { MessageTab } from "./_app-components/message-tab";
+import { ChatTab } from "./_app-components/chat-tab/chat-tab";
 
 export default function AppPage() {
 
     return (
         <main className="relative h-full overflow-hidden">
-            <MessageTab/>            
+            <ChatTab/>    
         </main>
     );
 }

@@ -1,7 +1,12 @@
 "use client";
-import { Button } from "../ui/button";
-import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
+import { Button } from "@/components/ui/button";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { CreateProfileInput, createProfileSchema } from "@repo/schema/profile";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +23,12 @@ export default function CreateProfileForm() {
     });
 
     return (
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit((data) => handleCreateProfile(data,setError))}>
+        <form
+            className="flex flex-col gap-6"
+            onSubmit={handleSubmit((data) =>
+                handleCreateProfile(data, setError)
+            )}
+        >
             <FieldGroup>
                 <div className="flex flex-col items-center gap-1 text-center">
                     <h1 className="text-2xl font-bold">Create new Profile</h1>
