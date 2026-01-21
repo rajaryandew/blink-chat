@@ -82,12 +82,51 @@ model Verification {
 // </auth>
 
 model Profile {
-  id          String  @id @default(uuid())
-  userId      String  @unique
-  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  username    String  @unique
-  displayName String?
-  profilePic  String?
+  id                String             @id @default(uuid())
+  userId            String             @unique
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username          String             @unique
+  displayName       String?
+  profilePic        String?
+  chatParticiapants ChatParticiapant[]
 
   @@map("profile")
+}
+
+model Chat {
+  id       String  @id @default(uuid())
+  chatName String
+  isGroup  Boolean @default(false)
+
+  chatParticipants ChatParticiapant[]
+  messages         Message[]
+}
+
+model ChatParticiapant {
+  id Int @id @default(autoincrement())
+  nickname String
+
+  chatId String
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  messages Message[]
+
+@@unique([chatId,profileId])
+
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  text      String
+  timestamp DateTime
+
+  chatId String
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  chatParticipantId Int
+  chatParticipant   ChatParticiapant @relation(fields: [chatParticipantId], references: [id], onDelete: NoAction)
 }
