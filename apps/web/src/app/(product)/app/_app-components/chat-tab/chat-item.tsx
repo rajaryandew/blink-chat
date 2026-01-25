@@ -8,9 +8,9 @@ export function ChatItem({ metadata }: { metadata: ChatType }) {
     const formattedDate = formatDistance(new Date(),metadata.lastMessage.timestamp)
 
     return (
-        <div className="h-18 flex items-center gap-2">
+        <div className="h-18 flex items-center gap-2" suppressHydrationWarning> 
             <Avatar className="size-12 grid place-items-center ">
-                <AvatarImage src={metadata.profilePic} />
+                <AvatarImage src={metadata.profilePic || undefined} />
                 <AvatarFallback asChild>
                     <UserCircle />
                 </AvatarFallback>

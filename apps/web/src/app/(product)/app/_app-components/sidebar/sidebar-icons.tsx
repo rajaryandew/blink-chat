@@ -39,11 +39,6 @@ export function MessageIcon() {
     const { isMessageTabOpen: isTabOpen, setIsMessageTabOpen } =
         useContext(MessageTabContext)!;
 
-    const props = {
-        ...iconProps,
-        size: "28",
-    };
-
     return (
         <div className="" onClick={() => setIsMessageTabOpen((val) => !val)}>
             {isTabOpen ? <MessageActive /> : <MessageInactive />}

@@ -5,7 +5,7 @@ export type ChatType = {
     id: string;
     name: string;
     lastMessage: { text: string; timestamp: Date };
-    profilePic: string;
+    profilePic: string | null;
 };
 
 const chats: ChatType[] = [
@@ -13,7 +13,7 @@ const chats: ChatType[] = [
         id: "a1f3c9e2",
         name: "Aryan",
         lastMessage: { text: "yo where you at?", timestamp: new Date() },
-        profilePic: "n/a",
+        profilePic: null,
     },
     {
         id: "b7d82a4f",
@@ -22,13 +22,13 @@ const chats: ChatType[] = [
             text: "push the commit already 😭",
             timestamp: new Date(),
         },
-        profilePic: "n/a",
+        profilePic: null,
     },
     {
         id: "c93e1d6a",
         name: "Neha",
         lastMessage: { text: "call me when free", timestamp: new Date() },
-        profilePic: "n/a",
+        profilePic: null,
     },
     {
         id: "d4a8f2c1",
@@ -37,13 +37,13 @@ const chats: ChatType[] = [
             text: "tailwind cooked this UI ngl",
             timestamp: new Date(),
         },
-        profilePic: "n/a",
+        profilePic: null,
     },
     {
         id: "e61c9b73",
         name: "Kunal",
         lastMessage: { text: "DSA grind when?", timestamp: new Date() },
-        profilePic: "n/a",
+        profilePic: null,
     },
     {
         id: "f9d2a5e8",
@@ -52,7 +52,7 @@ const chats: ChatType[] = [
             text: "bro it works on my machine",
             timestamp: new Date(),
         },
-        profilePic: "n/a",
+        profilePic: null,
     },
 ];
 
