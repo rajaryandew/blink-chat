@@ -6,3 +6,10 @@ export const chatSchema = z.object({
     isGroup:z.boolean(),
 })
 export type Chat = z.infer<typeof chatSchema>;
+
+export const createChatSchema = chatSchema.pick({
+    chatName:true,
+    isGroup:true
+})
+
+export type CreateChatInput = z.infer<typeof createChatSchema>

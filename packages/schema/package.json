@@ -7,7 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "exports":{
-    "./profile":"./src/profile.schema.ts"
+    "./profile":"./src/app/profile.schema.ts",
+    "./chat": "./src/app/chat.schema.ts",
+    "./chat-participant":"./src/app/chat-participant.schema.ts",
+    "./message":"./src/app/message.schema.ts"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*"
