@@ -22,7 +22,7 @@ export async function createProfile(
 
 export async function getProfile(userId: string) {
     try {
-        const profile: Profile | null = await prisma.profile.findUnique({
+        const profile: Profile | null = await prisma.profile.findUniqueOrThrow({
             where: {
                 userId,
             },
