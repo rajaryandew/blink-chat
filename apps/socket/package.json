@@ -4,18 +4,19 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "dev": "tsx src/index.ts"
+    "dev": "tsx watch src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.28.1",
   "dependencies": {
+    "@repo/database": "workspace:*",
+    "@repo/error": "workspace:*",
     "dotenv": "^17.2.3",
+    "esbuild": "^0.27.3",
     "socket.io": "^4.8.3",
-    "tsx": "^4.21.0",
-    "@repo/database":"workspace:*",
-    "@repo/error":"workspace:*"
+    "tsx": "^4.21.0"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*"

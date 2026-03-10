@@ -13,7 +13,7 @@ io.on("connection",async (socket) => {
     if(response !== 200){
         socket.emit("unauthorized")
         socket.disconnect()
-    }
-
-    
+    }    
 })
+
+io.listen(3001)
