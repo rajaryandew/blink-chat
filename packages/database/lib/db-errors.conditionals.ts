@@ -13,38 +13,38 @@ export function mapDatabaseError(err: unknown) {
                 return new DatabaseError(
                     DatabaseErrorCode.UNIQUE_CONSTRAINT,
                     error,
-                    { fields }
+                    { fields },
                 );
             case "P2003":
                 return new DatabaseError(
                     DatabaseErrorCode.FOREIGN_KEY_VIOLATION,
                     error,
                     {
-                        field:err.meta?.field_name,
-                        table:err.meta?.table_name
-                    }
+                        field: err.meta?.field_name,
+                        table: err.meta?.table_name,
+                    },
                 );
             case "P2011":
                 return new DatabaseError(
                     DatabaseErrorCode.CONSTRAINT_VIOLATION,
                     error,
                     {
-                        constraint:err.meta?.constraint_name,
-                        table:err.meta?.table
-                    }
+                        constraint: err.meta?.constraint_name,
+                        table: err.meta?.table,
+                    },
                 );
             case "P2001":
                 return new DatabaseError(
                     DatabaseErrorCode.RECORD_NOT_FOUND,
                     error,
                     {
-                        table:err.meta?.model
-                    }
+                        table: err.meta?.model,
+                    },
                 );
             case "P1001":
                 return new DatabaseError(
                     DatabaseErrorCode.DB_CONNECTION_ERROR,
-                    error
+                    error,
                 );
         }
     }

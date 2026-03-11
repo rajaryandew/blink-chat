@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
-import { PORT } from "../config.ts";
-import { verifyUser } from "./lib/auth/verify-user.ts";
+import { PORT } from "../config";
+import { verifyUser } from "./lib/auth/verify-user";
 
 const io = new Server(PORT,{
     cors:{
@@ -13,7 +13,8 @@ io.on("connection",async (socket) => {
     if(response !== 200){
         socket.emit("unauthorized")
         socket.disconnect()
-    }    
+    }
+    console.log(`someone connected with socketId:${socket}`)  
 })
 
 io.listen(3001)

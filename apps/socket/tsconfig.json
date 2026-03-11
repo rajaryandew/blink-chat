@@ -1,8 +1,8 @@
 {
     "extends":"@repo/typescript-config/base",
     "compilerOptions": {
-        "allowImportingTsExtensions": true,
-        "emitDeclarationOnly": true,
+        "moduleResolution": "bundler",
+        "module": "es6"
     }
             
 }
