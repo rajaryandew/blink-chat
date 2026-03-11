@@ -14,7 +14,7 @@ io.on("connection",async (socket) => {
         socket.emit("unauthorized")
         socket.disconnect()
     }
-    console.log(`someone connected with socketId:${socket}`)  
+    console.log(`someone connected with socketId:${socket.id}`)  
 })
 
 io.listen(3001)
