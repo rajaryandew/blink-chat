@@ -20,6 +20,9 @@ importers:
 
   apps/socket:
     dependencies:
+      '@prisma/client':
+        specifier: ^7.0.0
+        version: 7.0.0(prisma@7.0.0(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(typescript@5.9.2)
       '@repo/database':
         specifier: workspace:*
         version: link:../../packages/database
@@ -32,6 +35,9 @@ importers:
       esbuild:
         specifier: ^0.27.3
         version: 0.27.3
+      pg:
+        specifier: ^8.16.3
+        version: 8.16.3
       socket.io:
         specifier: ^4.8.3
         version: 4.8.3

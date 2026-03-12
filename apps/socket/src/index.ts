@@ -16,5 +16,3 @@ io.on("connection",async (socket) => {
     }
     console.log(`someone connected with socketId:${socket.id}`)  
 })
-
-io.listen(3001)
