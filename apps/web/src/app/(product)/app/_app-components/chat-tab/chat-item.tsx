@@ -16,9 +16,9 @@ export function ChatItem({ metadata }: { metadata: ChatType }) {
                 </AvatarFallback>
             </Avatar>
             <div className="w-full gap-1 flex flex-col justify-center">
-                <div className="flex items-center justify-between" suppressHydrationWarning>
+                <div className="flex items-center justify-between">
                     <h3 className="text-sm font-bold">{metadata.name}</h3>
-                    <p className="text-xs text-gray-100/70">{formattedDate} ago</p>
+                    <p className="text-xs text-gray-100/70" suppressHydrationWarning>{formattedDate} ago</p>
                 </div>
                 <p className="font-medium text-gray-300/50 text-xs">
                     {metadata.lastMessage.text.slice(0, 20)}...

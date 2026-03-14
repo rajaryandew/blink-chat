@@ -1,6 +1,6 @@
 "use client";
 import { SOCKET_SERVER_URL } from "@/lib/config";
-import { createContext, Dispatch, SetStateAction, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useMemo, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
 // messageTabContext
@@ -24,17 +24,5 @@ export function MessageTabProvider({
         >
             {children}
         </MessageTabContext.Provider>
-    );
-}
-
-// socket
-type SocketContextType = Socket | null;
-export const SocketContext = createContext<SocketContextType>(null);
-export function SocketProvider({ children }: { children: React.ReactNode }) {
-    const socket = io(SOCKET_SERVER_URL);
-    return (
-        <SocketContext.Provider value={socket}>
-            {children}
-        </SocketContext.Provider>
     );
 }
