@@ -1,0 +1,9 @@
+import { Server, Socket } from "socket.io";
+import {Chat, CreateChatInput} from "@repo/schema/chat"
+import {CreateChatRecord} from "@repo/database/chat"
+export async function registerChatHandlers(socket:Socket,io:Server){
+    socket.on("chat:create", async (chatInput:CreateChatInput) => {
+        const chat:Chat = await CreateChatRecord(chatInput)
+        socket.emit("chat:created",chat)
+    })
+}

@@ -15,7 +15,7 @@ export async function handleCreateProfile(
                 redirect("/auth/login");
             // fallthrough
             case "USER_NOT_AVAILABLE":
-                redirect("/login");
+                redirect("/auth/login");
             // fallthrough
             case "VALIDATION FAILED":
                 setError("root", {

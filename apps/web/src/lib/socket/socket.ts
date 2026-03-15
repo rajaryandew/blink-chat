@@ -1,13 +1,20 @@
+"use client"
 import { io, Socket } from "socket.io-client";
 import { SOCKET_SERVER_URL } from "../config";
+import {ClientToServerEvents, ServerToClientEvents} from "@repo/schema/socket"
 
-export const socket: Socket = io(SOCKET_SERVER_URL, { autoConnect: false });
+export const socket: Socket<ServerToClientEvents,ClientToServerEvents> = io(SOCKET_SERVER_URL,{autoConnect:false});
 
 socket.on("connect", () => {
     console.log("connected");
     console.log(socket.id);
 });
 
-export function socketConnect(){
+socket.on("disconnect",() => {
+    console.log("disconneted")
+})
+
+export function socketConnect(userId:string){
+    socket.auth = {userId}
     socket.connect()
 }

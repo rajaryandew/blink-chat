@@ -10,7 +10,8 @@
     "./profile":"./src/app/profile.schema.ts",
     "./chat": "./src/app/chat.schema.ts",
     "./chat-participant":"./src/app/chat-participant.schema.ts",
-    "./message":"./src/app/message.schema.ts"
+    "./message":"./src/app/message.schema.ts",
+    "./socket":"./src/app/socket.schema.ts"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*"

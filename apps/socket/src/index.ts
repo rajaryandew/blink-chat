@@ -1,18 +1,26 @@
 import { Server } from "socket.io";
 import { PORT } from "../config";
 import { verifyUser } from "./lib/auth/verify-user";
+import { registerChatHandlers } from "./lib/handlers/chatHandler";
+import { ClientToServerEvents, ServerToClientEvents } from "@repo/schema/socket";
 
-const io = new Server(PORT,{
-    cors:{
-        origin:'*'
-    }
-})
+const io = new Server<ClientToServerEvents,ServerToClientEvents>(PORT, {
+    cors: {
+        origin: "*",
+    },
+});
 
-io.on("connection",async (socket) => {
-    const {response} = await verifyUser(socket)
-    if(response !== 200){
-        socket.emit("unauthorized")
-        socket.disconnect()
+io.on("connection", async (socket) => {
+    const { response } = await verifyUser(socket);
+    if (response !== 200) {
+        socket.emit("unauthorized");
+        socket.disconnect();
     }
-    console.log(`someone connected with socketId:${socket.id}`)  
-})
+
+    io.engine.on("connection_error",(err) => {
+        console.log(err.code)
+    })
+
+    registerChatHandlers(socket, io);
+    console.log(`someone connected with socketId:${socket.id}`);
+});

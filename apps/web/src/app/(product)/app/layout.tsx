@@ -4,10 +4,14 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { MessageTabProvider } from "./contexts";
 import { useEffect } from "react";
 import { socketConnect } from "@/lib/socket/socket";
+import { auth } from "@/lib/auth/auth";
+import { authClient } from "@/lib/auth/auth-client";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
 
-    useEffect(() => socketConnect())
+    const {data:session} = authClient.useSession()
+
+    useEffect(() => socketConnect(session?.user.id!))
 
     return (
         <SidebarProvider defaultOpen={false}>

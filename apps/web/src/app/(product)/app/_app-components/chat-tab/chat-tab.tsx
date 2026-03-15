@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/sheet";
 import { useContext } from "react";
 import { MessageTabContext } from "../../contexts";
-import { MessageSquarePlus } from "lucide-react";
 import { ChatSearch } from "./chat-search";
 import { ChatList } from "./chat-list";
 import { Separator } from "@/components/ui/separator";
+import { ChatCreate } from "./chat-add";
 
 export function ChatTab() {
     const { isMessageTabOpen: isOpen, setIsMessageTabOpen: setIsOpen } =
@@ -23,7 +23,7 @@ export function ChatTab() {
                 <SheetHeader className="flex flex-row items-center justify-between">
                     <SheetTitle className="text-xl font-bold">BlinkChat</SheetTitle>
                     <SheetClose className="hidden" />
-                    <MessageSquarePlus />
+                    <ChatCreate/>
                 </SheetHeader>
                 <main className="px-4 py-3 grid gap-5">
                     <ChatSearch/>
