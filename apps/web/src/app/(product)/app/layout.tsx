@@ -11,7 +11,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
     const {data:session} = authClient.useSession()
 
-    useEffect(() => socketConnect(session?.user.id!))
+    useEffect(() =>{
+
+        if(!session?.user.id) return
+
+        socketConnect(session?.user.id!)
+        console.log("Userid:",session?.user.id)
+    },[session?.user.id])
 
     return (
         <SidebarProvider defaultOpen={false}>

@@ -6,5 +6,10 @@ export const chatParticipantSchema = z.object({
     chatId:z.uuid(),
     profileId:z.uuid()
 })
-
 export type ChatParticipant = z.infer<typeof chatParticipantSchema>
+
+export const createChatParticipantSchema = chatParticipantSchema.pick({
+    chatId:true,
+    profileId:true
+})
+export type CreateChatParticipantInput = z.infer<typeof createChatParticipantSchema>

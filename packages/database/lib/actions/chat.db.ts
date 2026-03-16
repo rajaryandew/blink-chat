@@ -2,10 +2,10 @@ import { Chat, CreateChatInput } from "@repo/schema/chat";
 import { prisma } from "../prisma";
 import { mapDatabaseError } from "../db-errors.conditionals";
 
-export async function CreateChatRecord(chatInput: CreateChatInput) {
+export async function createChatRecord(chatInput: CreateChatInput) {
     try {
         const chat: Chat = await prisma.chat.create({
-            data: chatInput,
+            data: chatInput
         });
         return chat;
     } catch (err) {

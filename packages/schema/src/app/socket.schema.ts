@@ -1,3 +1,4 @@
+import { CreateChatParticipantInput } from "./chat-participant.schema";
 import { Chat, CreateChatInput } from "./chat.schema";
 
 export interface ServerToClientEvents{

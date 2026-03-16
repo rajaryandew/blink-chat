@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    devIndicators:false
+    devIndicators:false,
+    reactStrictMode: false
 };
 
 export default nextConfig;

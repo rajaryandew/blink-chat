@@ -14,13 +14,10 @@ io.on("connection", async (socket) => {
     const { response } = await verifyUser(socket);
     if (response !== 200) {
         socket.emit("unauthorized");
-        socket.disconnect();
+        console.log("user not authorized")
+        socket.disconnect(true);
     }
-
-    io.engine.on("connection_error",(err) => {
-        console.log(err.code)
-    })
-
+    
     registerChatHandlers(socket, io);
     console.log(`someone connected with socketId:${socket.id}`);
 });

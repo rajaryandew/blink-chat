@@ -23,7 +23,8 @@
   "exports":{
     "./profile": "./lib/actions/profile.db.ts",
     "./chat":"./lib/actions/chat.db.ts",
-    "./prisma-client": "./lib/prisma.ts"
+    "./prisma-client": "./lib/prisma.ts",
+    "./chat-participant":"./lib/actions/chatParticipant.db.ts"
   },
   "packageManager": "pnpm@10.23.0"
 }
