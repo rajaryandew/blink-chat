@@ -88,7 +88,7 @@ model Profile {
   username          String             @unique
   displayName       String?
   profilePic        String?
-  chatParticiapants ChatParticiapant[]
+  chatParticipants ChatParticipant[]
 
   @@map("profile")
 }
@@ -98,11 +98,11 @@ model Chat {
   chatName String
   isGroup  Boolean @default(false)
 
-  chatParticipants ChatParticiapant[]
+  chatParticipants ChatParticipant[]
   messages         Message[]
 }
 
-model ChatParticiapant {
+model ChatParticipant {
   id Int @id @default(autoincrement())
   nickname String
 
@@ -128,5 +128,5 @@ model Message {
   chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
   chatParticipantId Int
-  chatParticipant   ChatParticiapant @relation(fields: [chatParticipantId], references: [id], onDelete: NoAction)
+  chatParticipant   ChatParticipant @relation(fields: [chatParticipantId], references: [id], onDelete: NoAction)
 }
