@@ -95,7 +95,7 @@ model Profile {
 
 model Chat {
   id       String  @id @default(uuid())
-  chatName String
+  chatName String?
   isGroup  Boolean @default(false)
 
   chatParticipants ChatParticipant[]
@@ -104,7 +104,7 @@ model Chat {
 
 model ChatParticipant {
   id Int @id @default(autoincrement())
-  nickname String
+  nickname String?
 
   chatId String
   chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
