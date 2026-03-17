@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogClose,
@@ -10,31 +9,41 @@ import {
     DialogTrigger,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
+import { authClient } from "@/lib/auth/auth-client";
 import { handleCreateChat } from "@/lib/client-handlers/chat.handlers";
-import { socket } from "@/lib/socket/socket";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateChatInput, createChatSchema } from "@repo/schema/chat";
 import { MessageSquarePlus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export function ChatCreate() {
+    const {data:session} = authClient.useSession()
+    useEffect(() => {
+        if(!session?.user.id) return
+        setValue("userId", session.user.id)
+    },[session?.user.id]);
     const {
         register,
         formState: { errors, isSubmitting },
         handleSubmit,
+        setValue,
+        setError
     } = useForm<CreateChatInput>({
         resolver: zodResolver(createChatSchema),
-        defaultValues:{
-            isGroup: false
-        }
+        defaultValues: {
+            isGroup: false,
+        },
     });
-
-    const [checked,changeChecked] = useState(false)
 
     return (
         <Dialog>
@@ -47,28 +56,28 @@ export function ChatCreate() {
                 </DialogHeader>
                 <form
                     className="flex flex-col gap-2"
-                    onSubmit={handleSubmit(handleCreateChat)}
+                    onSubmit={handleSubmit((input) => {
+                        
+                        console.log("Hello")
+                        handleCreateChat(input)
+                    })}
                 >
                     <FieldGroup>
                         <Field>
                             <FieldLabel
                                 className="opacity-75"
-                                htmlFor="chatName"
+                                htmlFor="username"
                             >
-                                Chat Name
+                                Username(should be correct*)
                             </FieldLabel>
                             <Input
                                 className="border-0"
-                                aria-invalid={errors.chatName ? true : false}
-                                {...register("chatName")}
-                                placeholder="crofty"
+                                {...register("username")}
                             />
-                            <FieldError>{errors.chatName?.message}</FieldError>
+                            <FieldError>{errors.username?.message}</FieldError>
                         </Field>
                         <Field className="" orientation="horizontal">
-                            <Switch
-                                {...register("isGroup")}
-                            />
+                            <Switch {...register("isGroup")} disabled={true} />
                             <FieldLabel
                                 className="opacity-75"
                                 htmlFor="isGroup"
@@ -76,6 +85,9 @@ export function ChatCreate() {
                                 Group Chat??
                             </FieldLabel>
                             <FieldError>{errors.isGroup?.message}</FieldError>
+                        </Field>
+                        <Field>
+                            <FieldError>{errors.root?.message}</FieldError>
                         </Field>
                         <Separator />
                         <DialogFooter>

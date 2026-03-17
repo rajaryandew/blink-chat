@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ path: "next" });
     }
 
-    const profile = await getProfile(session.user.id);
+    const profile = await getProfile((session.user.id)).catch(() => null);
     if (!profile) {
         if (pathname === "/auth/create-profile"){
             return NextResponse.json({ path: "next" });

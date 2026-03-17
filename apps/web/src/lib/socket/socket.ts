@@ -19,7 +19,7 @@ socket.on("connect", () => {
 });
 
 socket.on("disconnect", () => {
-    console.log("disconneted");
+    console.log("disconnected");
 });
 
 export function socketConnect(userId: string) {

@@ -5,9 +5,9 @@ import { registerChatHandlers } from "./lib/handlers/chatHandler";
 import { ClientToServerEvents, ServerToClientEvents } from "@repo/schema/socket";
 
 const io = new Server<ClientToServerEvents,ServerToClientEvents>(PORT, {
-    cors: {
-        origin: "*",
-    },
+    cors:{
+        origin:"*"
+    }
 });
 
 io.on("connection", async (socket) => {
@@ -20,4 +20,5 @@ io.on("connection", async (socket) => {
     
     registerChatHandlers(socket, io);
     console.log(`someone connected with socketId:${socket.id}`);
+    
 });

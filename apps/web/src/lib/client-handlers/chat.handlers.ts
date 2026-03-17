@@ -1,9 +1,12 @@
 "use client";
 import { CreateChatInput } from "@repo/schema/chat";
-import { socket } from "../socket/socket";
-import { getProfile } from "@repo/database/profile";
+import { createChat } from "../socket/handlers/chat.socket";
 
-export async function handleCreateChat(input:CreateChatInput){
-    console.log("Hello")
-    socket.emit("chat:create",input)
+export function handleCreateChat(input:CreateChatInput){
+    try{
+        console.log("hello")
+        createChat(input)
+    }catch(err){
+        throw err
+    }
 }

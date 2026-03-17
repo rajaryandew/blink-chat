@@ -4,7 +4,11 @@ import {createChatRecord} from "@repo/database/chat"
 
 export async function registerChatHandlers(socket:Socket,io:Server){
     socket.on("chat:create", async (chatInput:CreateChatInput) => {
-        const chat:Chat = await createChatRecord(chatInput)
-        socket.emit("chat:created",chat)
+        try {
+            const chat:Chat = await createChatRecord(chatInput)
+            socket.emit("chat:created",chat)
+        } catch (error) {
+            throw error
+        }
     })
 }

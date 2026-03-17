@@ -32,3 +32,16 @@ export async function getProfile(userId: string) {
         throw mapDatabaseError(err)
     }
 }
+
+export async function getProfileByUsername(username:string){
+    try {
+        const profile:Profile | null = await prisma.profile.findUniqueOrThrow({
+            where:{
+                username
+            }
+        })
+        return profile
+    } catch (error) {
+        throw mapDatabaseError(error)
+    }
+}
