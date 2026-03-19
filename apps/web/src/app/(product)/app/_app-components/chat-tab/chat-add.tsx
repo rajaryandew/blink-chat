@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { authClient } from "@/lib/auth/auth-client";
-import { handleCreateChat } from "@/lib/client-handlers/chat.handlers";
+import { createChat } from "@/lib/socket/handlers/chat.socket";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateChatInput, createChatSchema } from "@repo/schema/chat";
 import { MessageSquarePlus } from "lucide-react";
@@ -57,9 +57,7 @@ export function ChatCreate() {
                 <form
                     className="flex flex-col gap-2"
                     onSubmit={handleSubmit((input) => {
-                        
-                        console.log("Hello")
-                        handleCreateChat(input)
+                        createChat(input)
                     })}
                 >
                     <FieldGroup>

@@ -3,7 +3,7 @@
 import { CircleUser, GalleryVerticalEnd, Settings } from "lucide-react";
 import Link from "next/link";
 import { useContext } from "react";
-import { messageTabContext } from "../../contexts";
+import { MessageTabContext } from "../../contexts";
 import { MessageActive, MessageInactive } from "@/components/ui/icons";
 
 const iconProps = {
@@ -37,7 +37,7 @@ export function AppIcon() {
 
 export function MessageIcon() {
     const { isMessageTabOpen: isTabOpen, setIsMessageTabOpen } =
-        useContext(messageTabContext)!;
+        useContext(MessageTabContext)!;
 
     return (
         <div className="" onClick={() => setIsMessageTabOpen((val) => !val)}>

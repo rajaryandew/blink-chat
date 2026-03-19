@@ -1,4 +1,3 @@
-import { AppError, AppErrorType } from "@repo/error";
 import { Chat, CreateChatInput } from "./chat.schema";
 
 export interface ServerToClientEvents {

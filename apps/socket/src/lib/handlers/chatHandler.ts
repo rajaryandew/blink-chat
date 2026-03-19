@@ -1,5 +1,5 @@
 import { Chat, CreateChatInput } from "@repo/schema/chat";
-import { createChatRecord } from "@repo/database/chat";
+import { createChatRecord, fetchChatRecords } from "@repo/database/chat";
 
 import { ServerType, SocketType } from "../..";
 import { AppError, DatabaseError } from "@repo/error";

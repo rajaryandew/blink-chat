@@ -4,7 +4,7 @@ export const chatParticipantSchema = z.object({
     id:z.int(),
     nickname:z.string(),
     chatId:z.uuid(),
-    profileId:z.uuid()
+    userId:z.uuid()
 })
 export type ChatParticipant = z.infer<typeof chatParticipantSchema>
 

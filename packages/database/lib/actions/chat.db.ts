@@ -3,19 +3,26 @@ import { prisma } from "../prisma";
 import { mapDatabaseError } from "../db-errors.conditionals";
 import { getProfile, getProfileByUsername } from "./profile.db";
 import { DatabaseError } from "@repo/error";
+import { ChatParticipant } from "@repo/schema/chat-participant";
+import { Message } from "@repo/schema/message";
 
-export async function createChatRecord(
-    chatInput: CreateChatInput,
-) {
+export async function createChatRecord(chatInput: CreateChatInput) {
     try {
         const person = await getProfileByUsername(chatInput.username);
+        const self = await getProfile(chatInput.self_userId);
         const chat: Chat = await prisma.chat.create({
             data: {
                 chatParticipants: {
                     createMany: {
                         data: [
-                            { userId: person.userId },
-                            { userId: chatInput.self_userId},
+                            {
+                                userId: person.userId,
+                                nickname: person.displayName || person.username,
+                            },
+                            {
+                                userId: chatInput.self_userId,
+                                nickname: self.displayName || self.username,
+                            },
                         ],
                     },
                 },
@@ -23,9 +30,8 @@ export async function createChatRecord(
         });
         return chat;
     } catch (err) {
-
-        if(err instanceof DatabaseError){
-            throw err
+        if (err instanceof DatabaseError) {
+            throw err;
         }
 
         const mappedError = mapDatabaseError(err);
@@ -33,19 +39,25 @@ export async function createChatRecord(
     }
 }
 
-export async function fetchChatRecords(userId:string) {
+export async function fetchChatRecords(userId: string) {
     try {
-        const chats:Chat[] = await prisma.chat.findMany({
-            where:{
-               chatParticipants:{
-                some:{
-                    userId
-                }
-               } 
-            }
-        })
-        return chats  
+        const chats: ({ chatParticipants: ChatParticipant[],messages:Message[] } & Chat)[] =
+            await prisma.chat.findMany({
+                where: {
+                    chatParticipants: {
+                        some: {
+                            userId,
+                        },
+                    },
+                },
+
+                include: {
+                    chatParticipants: true,
+                    messages:true
+                },
+            });
+        return chats;
     } catch (error) {
-        throw mapDatabaseError(error)
+        throw mapDatabaseError(error);
     }
 }
