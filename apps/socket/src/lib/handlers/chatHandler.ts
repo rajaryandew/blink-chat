@@ -1,14 +1,42 @@
-import { Server, Socket } from "socket.io";
-import {Chat, CreateChatInput} from "@repo/schema/chat"
-import {createChatRecord} from "@repo/database/chat"
+import { Chat, CreateChatInput } from "@repo/schema/chat";
+import { createChatRecord } from "@repo/database/chat";
 
-export async function registerChatHandlers(socket:Socket,io:Server){
-    socket.on("chat:create", async (chatInput:CreateChatInput) => {
+import { ServerType, SocketType } from "../..";
+import { AppError, DatabaseError } from "@repo/error";
+import { DatabaseErrorCode } from "@repo/error/types";
+
+export async function registerChatHandlers(socket: SocketType, io: ServerType) {
+    socket.on("chat:create", async (chatInput: CreateChatInput) => {
         try {
-            const chat:Chat = await createChatRecord(chatInput)
-            socket.emit("chat:created",chat)
+            const chat: Chat = await createChatRecord(chatInput);
+            socket.emit("chat:created", { success: true, data: chat });
         } catch (error) {
-            throw error
+            const e = error as DatabaseError;
+            let mainError = new AppError("UNKNOWN_ERROR", { cause: error });
+            switch (e.code) {
+                case DatabaseErrorCode.UNIQUE_CONSTRAINT:
+                    mainError = new AppError("CHAT_ALREADY_EXISTS");
+                    break;
+                case DatabaseErrorCode.CONSTRAINT_VIOLATION:
+                    mainError = new AppError("MISSING_FIELDS");
+                    break;
+                case DatabaseErrorCode.FOREIGN_KEY_VIOLATION:
+                    mainError = new AppError("USERNAME_INCORRECT");
+                    break;
+                case DatabaseErrorCode.RECORD_NOT_FOUND:
+                    mainError = new AppError("PERSON_NOT_FOUND");
+                    break;
+                case DatabaseErrorCode.DB_CONNECTION_ERROR:
+                    mainError = new AppError("CONNECTION_FAILED");
+                    break;
+                default:
+                    mainError = new AppError("UNKNOWN_ERROR");
+                    break;
+            }
+            socket.emit("chat:created", {
+                success: false,
+                data: { message: mainError.message },
+            });
         }
-    })
+    });
 }

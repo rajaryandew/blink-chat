@@ -34,6 +34,7 @@ export function mapDatabaseError(err: unknown) {
                     },
                 );
             case "P2001":
+            case "P2025":
                 return new DatabaseError(
                     DatabaseErrorCode.RECORD_NOT_FOUND,
                     error,

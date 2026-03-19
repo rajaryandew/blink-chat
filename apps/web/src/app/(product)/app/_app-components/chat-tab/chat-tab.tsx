@@ -7,28 +7,33 @@ import {
     SheetTitle,
 } from "@/components/ui/sheet";
 import { useContext } from "react";
-import { MessageTabContext } from "../../contexts";
+import { messageTabContext } from "../../contexts";
 import { ChatSearch } from "./chat-search";
 import { ChatList } from "./chat-list";
 import { Separator } from "@/components/ui/separator";
 import { ChatCreate } from "./chat-add";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function ChatTab() {
     const { isMessageTabOpen: isOpen, setIsMessageTabOpen: setIsOpen } =
-        useContext(MessageTabContext)!;
+        useContext(messageTabContext)!;
+
+    const isMobile = useIsMobile()
 
     return (
-        <Sheet open={isOpen} onOpenChange={setIsOpen} modal={false}>
-            <SheetContent className="absolute w-[400px]" side="left">
+        <Sheet open={isMobile ? true : isOpen} onOpenChange={setIsOpen} modal={false}>
+            <SheetContent className="absolute md:w-[400px] sm:w-screen" side="left">
                 <SheetHeader className="flex flex-row items-center justify-between">
-                    <SheetTitle className="text-xl font-bold">BlinkChat</SheetTitle>
+                    <SheetTitle className="text-xl font-bold">
+                        BlinkChat
+                    </SheetTitle>
                     <SheetClose className="hidden" />
-                    <ChatCreate/>
+                    <ChatCreate />
                 </SheetHeader>
                 <main className="px-4 py-3 grid gap-5">
-                    <ChatSearch/>
-                    <Separator/>
-                    <ChatList/>
+                    <ChatSearch />
+                    <Separator />
+                    <ChatList />
                 </main>
             </SheetContent>
         </Sheet>

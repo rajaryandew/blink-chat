@@ -1,8 +1,11 @@
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { PORT } from "../config";
 import { verifyUser } from "./lib/auth/verify-user";
 import { registerChatHandlers } from "./lib/handlers/chatHandler";
 import { ClientToServerEvents, ServerToClientEvents } from "@repo/schema/socket";
+
+export type SocketType = Socket<ClientToServerEvents, ServerToClientEvents>;
+export type ServerType = Server<ClientToServerEvents, ServerToClientEvents>;
 
 const io = new Server<ClientToServerEvents,ServerToClientEvents>(PORT, {
     cors:{

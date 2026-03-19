@@ -260,6 +260,9 @@ importers:
 
   packages/schema:
     dependencies:
+      '@repo/error':
+        specifier: workspace:*
+        version: link:../error
       zod:
         specifier: ^4.1.13
         version: 4.1.13

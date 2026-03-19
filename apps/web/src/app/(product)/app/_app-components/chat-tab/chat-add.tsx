@@ -30,7 +30,7 @@ export function ChatCreate() {
     const {data:session} = authClient.useSession()
     useEffect(() => {
         if(!session?.user.id) return
-        setValue("userId", session.user.id)
+        setValue("self_userId", session.user.id)
     },[session?.user.id]);
     const {
         register,

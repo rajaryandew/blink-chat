@@ -26,6 +26,7 @@ model User {
   profile       Profile?
   sessions      Session[]
   accounts      Account[]
+  chatParticipants ChatParticipant[]
 
   @@unique([email])
   @@map("user")
@@ -88,7 +89,6 @@ model Profile {
   username          String             @unique
   displayName       String?
   profilePic        String?
-  chatParticipants ChatParticipant[]
 
   @@map("profile")
 }
@@ -110,12 +110,12 @@ model ChatParticipant {
   chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
 
-  profileId String
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   messages Message[]
 
-@@unique([chatId,profileId])
+@@unique([chatId,userId])
 
 }
 

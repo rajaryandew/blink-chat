@@ -14,6 +14,14 @@ class AppError extends Error {
     }
 }
 
+type AppErrorType = {
+    message:string
+    data?: {
+        meta?:Record<string,unknown>,
+        cause?:unknown
+    }
+};
+
 class DatabaseError extends Error {
     code: DatabaseErrorCode;
     cause?: unknown; // error object
@@ -30,5 +38,6 @@ class DatabaseError extends Error {
         this.meta = meta;
     }
 }
+type DatabaseErrorType = InstanceType<typeof DatabaseError>;
 
-export { DatabaseError, AppError };
+export { DatabaseError, AppError,type AppErrorType,type DatabaseErrorType };
