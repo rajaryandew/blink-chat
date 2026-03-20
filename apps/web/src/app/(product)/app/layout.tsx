@@ -4,7 +4,6 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { MessageTabProvider } from "./contexts";
 import { useEffect } from "react";
 import { socketConnect } from "@/lib/socket/socket";
-import { auth } from "@/lib/auth/auth";
 import { authClient } from "@/lib/auth/auth-client";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -16,7 +15,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         if(!session?.user.id) return
 
         socketConnect(session?.user.id!)
-        console.log("Userid:",session?.user.id)
     },[session?.user.id])
 
     return (

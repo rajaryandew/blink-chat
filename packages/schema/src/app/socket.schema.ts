@@ -1,14 +1,14 @@
 import { Chat, CreateChatInput } from "./chat.schema";
 
+export type ChatCreatedResponse =
+    | {
+          success: true;
+          data: Chat;
+      }
+    | { success: false; data: { message: string; cause?: unknown } };
+
 export interface ServerToClientEvents {
-    "chat:created": (
-        response:
-            | {
-                  success: true;
-                  data: Chat;
-              }
-            | { success: false; data: { message: string; cause?: unknown } },
-    ) => void;
+    "chat:created": (response: ChatCreatedResponse) => void;
     unauthorized: () => void;
 }
 

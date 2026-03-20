@@ -2,6 +2,11 @@
 
 import { toast } from "sonner";
 import { getChats } from "../server-actions/chat.actions";
+import { ChatCreatedResponse } from "@repo/schema/socket";
+import { createChat } from "../socket/handlers/chat.socket";
+import { Chat, CreateChatInput } from "@repo/schema/chat";
+import { socket } from "../socket/socket";
+import { Dispatch, SetStateAction } from "react"
 
 export async function handleGetChats() {
     const response = await getChats();
@@ -19,3 +24,43 @@ export async function handleGetChats() {
     }
     return response.chats;
 }
+
+export async function handleCreateChat(chatInput:CreateChatInput){
+    createChat(chatInput)
+}
+
+export async function handleChatCreated(setChatList:Dispatch<SetStateAction<Chat[] | null>>) {
+    socket.on("chat:created",(response) => {
+        if (response.success === false) {
+            switch (response.data.message) {
+                case "CHAT_ALREADY_EXISTS":
+                    toast.warning("Chat with this person exists!");
+                    break;
+                case "MISSING_FIELDS":
+                    toast.error("Try creating the chat once again!!");
+                    break;
+                case "PERSON_NOT_FOUND":
+                case "USERNAME_INCORRECT":
+                    toast.error(
+                        "oops! Looks like the username is incorrect. Please recheck it",
+                    );
+                    break;
+                case "CONNECTION_FAILED":
+                    toast.error(
+                        "Server failed to connect! Try again after sometime.",
+                    );
+                    break;
+                case "UNKNOWN_ERROR":
+                default:
+                    toast.error(
+                        "oops! Something went wrong, try again after sometime",
+                    );
+                    break;
+            }
+            return
+        }
+
+        return setChatList(v => [response.data,...(v ?? [])])
+    })
+}
+

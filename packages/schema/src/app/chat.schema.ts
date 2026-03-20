@@ -1,9 +1,13 @@
 import * as z from "zod"
+import { messageSchema } from "./message.schema";
+import { chatParticipantSchema } from "./chat-participant.schema";
 
 export const chatSchema = z.object({
     id: z.uuid(),
     chatName:z.string().max(50).nullish(),
     isGroup:z.boolean(),
+    messages: messageSchema.array(),
+    chatParticipants: chatParticipantSchema.array()
 })
 export type Chat = z.infer<typeof chatSchema>;
 

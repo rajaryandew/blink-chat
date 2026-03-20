@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { authClient } from "@/lib/auth/auth-client";
+import { handleCreateChat } from "@/lib/client-handlers/chat.handlers";
 import { createChat } from "@/lib/socket/handlers/chat.socket";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateChatInput, createChatSchema } from "@repo/schema/chat";
@@ -45,8 +46,10 @@ export function ChatCreate() {
         },
     });
 
+    const [open, setOpen] = useState(false)
+
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <MessageSquarePlus />
             </DialogTrigger>
@@ -57,7 +60,8 @@ export function ChatCreate() {
                 <form
                     className="flex flex-col gap-2"
                     onSubmit={handleSubmit((input) => {
-                        createChat(input)
+                        handleCreateChat(input)
+                        setOpen(false)
                     })}
                 >
                     <FieldGroup>

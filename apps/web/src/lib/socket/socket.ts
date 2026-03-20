@@ -6,7 +6,6 @@ import {
     ServerToClientEvents,
 } from "@repo/schema/socket";
 import { registerAuthEvents } from "./handlers/auth.socket";
-import { registerChatEvents } from "./handlers/chat.socket";
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
     SOCKET_SERVER_URL,
@@ -27,5 +26,4 @@ export function socketConnect(userId: string) {
     socket.connect();
 
     registerAuthEvents()
-    registerChatEvents()
 }

@@ -27,6 +27,10 @@ export async function createChatRecord(chatInput: CreateChatInput) {
                     },
                 },
             },
+            include:{
+                chatParticipants:true,
+                messages:true
+            }
         });
         return chat;
     } catch (err) {
@@ -41,7 +45,7 @@ export async function createChatRecord(chatInput: CreateChatInput) {
 
 export async function fetchChatRecords(userId: string) {
     try {
-        const chats: ({ chatParticipants: ChatParticipant[],messages:Message[] } & Chat)[] =
+        const chats:Chat[] =
             await prisma.chat.findMany({
                 where: {
                     chatParticipants: {

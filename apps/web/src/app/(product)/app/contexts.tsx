@@ -37,23 +37,19 @@ export function MessageTabProvider({
 }
 
 // chatListContext
-export type ChatType = (Chat & {
-    chatParticipants: ChatParticipant[];
-    messages: Message[]
-});
 type ChatListContextType = {
-    chatList: ChatType[];
-    setChatList: Dispatch<SetStateAction<ChatType[]>>;
+    chatList: Chat[] | null;
+    setChatList: Dispatch<SetStateAction<Chat[] | null>>;
 };
 export const ChatListContext = createContext<ChatListContextType | null>(null);
 export function ChatListProvider({ children }: { children: React.ReactNode }) {
-    const [chatList, setChatList] = useState<ChatType[]>([]);
+    const [chatList, setChatList] = useState<Chat[] | null>(null);
 
     useEffect(() => {
         handleGetChats().then((response) => {
             setChatList(response);
         });
-    });
+    },[]);
 
     return (
         <ChatListContext.Provider value={{ chatList, setChatList }}>
