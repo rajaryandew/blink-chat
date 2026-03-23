@@ -9,3 +9,10 @@ export const messageSchema = z.object({
 })
 
 export type Message = z.infer<typeof messageSchema>
+
+export const createMessageSchmea = messageSchema.pick({
+    text:true,
+    chatId:true,
+    chatParticipantId:true
+})
+export type CreateMessageInput = z.infer<typeof createMessageSchmea>

@@ -6,6 +6,7 @@ import {
     ServerToClientEvents,
 } from "@repo/schema/socket";
 import { registerAuthEvents } from "./handlers/auth.socket";
+import { Chat } from "@repo/schema/chat";
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
     SOCKET_SERVER_URL,
@@ -25,5 +26,11 @@ export function socketConnect(userId: string) {
     socket.auth = { userId };
     socket.connect();
 
-    registerAuthEvents()
+    registerAuthEvents();
+}
+
+export function connectToRooms(chatList: Chat[] | null) {
+    console.log("hitted connectToRooms")
+    if(!chatList) return
+    socket.emit("chat:connect", chatList);
 }

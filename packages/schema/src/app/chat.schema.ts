@@ -16,5 +16,4 @@ export const createChatSchema = z.object({
     username: z.string().trim().nonempty("Please enter the username!"),
     self_userId:z.string().nonempty("Try logging in again")
 })
-
 export type CreateChatInput = z.infer<typeof createChatSchema>

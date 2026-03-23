@@ -1,11 +1,17 @@
 import { Chat, CreateChatInput } from "@repo/schema/chat";
-import { createChatRecord, fetchChatRecords } from "@repo/database/chat";
+import { createChatRecord } from "@repo/database/chat";
 
 import { ServerType, SocketType } from "../..";
 import { AppError, DatabaseError } from "@repo/error";
 import { DatabaseErrorCode } from "@repo/error/types";
 
 export async function registerChatHandlers(socket: SocketType, io: ServerType) {
+    socket.on("chat:connect", (chatList) => {
+        chatList.forEach((chat) => {
+            socket.join(chat.id);
+        });
+    });
+
     socket.on("chat:create", async (chatInput: CreateChatInput) => {
         try {
             const chat: Chat = await createChatRecord(chatInput);

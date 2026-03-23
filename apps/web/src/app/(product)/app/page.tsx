@@ -5,8 +5,8 @@ import { ChatTab } from "./_app-components/chat-tab/chat-tab";
 export default function AppPage() {
 
     return (
-        <main className="relative h-full overflow-hidden">
-            <ChatTab/>    
-        </main>
+       <div className="w-full h-full flex items-center justify-center">
+            Click on a chat to talk
+       </div>
     );
 }

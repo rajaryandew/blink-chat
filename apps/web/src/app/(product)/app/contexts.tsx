@@ -8,9 +8,9 @@ import {
     useState,
 } from "react";
 import { Chat } from "@repo/schema/chat";
-import { ChatParticipant } from "@repo/schema/chat-participant";
 import { handleGetChats } from "@/lib/client-handlers/chat.handlers";
-import {Message} from "@repo/schema/message"
+import { handleMessgeCreated } from "@/lib/client-handlers/message.handlers";
+import { connectToRooms, socket } from "@/lib/socket/socket";
 
 // messageTabContext
 type MessageTabContextType = {
@@ -40,19 +40,33 @@ export function MessageTabProvider({
 type ChatListContextType = {
     chatList: Chat[] | null;
     setChatList: Dispatch<SetStateAction<Chat[] | null>>;
+    isLoading: boolean;
 };
 export const ChatListContext = createContext<ChatListContextType | null>(null);
 export function ChatListProvider({ children }: { children: React.ReactNode }) {
     const [chatList, setChatList] = useState<Chat[] | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        handleGetChats().then((response) => {
-            setChatList(response);
-        });
-    },[]);
+        if (chatList) return;
+        handleGetChats()
+            .then((response) => {
+                setChatList(response);
+                connectToRooms(response)
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+        
+        handleMessgeCreated(setChatList);
+
+        return () => {
+            socket.off("chat:created");
+        };
+    }, []);
 
     return (
-        <ChatListContext.Provider value={{ chatList, setChatList }}>
+        <ChatListContext.Provider value={{ chatList, setChatList, isLoading }}>
             {children}
         </ChatListContext.Provider>
     );

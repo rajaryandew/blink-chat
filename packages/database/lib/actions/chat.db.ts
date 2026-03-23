@@ -62,6 +62,7 @@ export async function fetchChatRecords(userId: string) {
             });
         return chats;
     } catch (error) {
+        console.log(error)
         throw mapDatabaseError(error);
     }
 }

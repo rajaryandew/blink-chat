@@ -24,7 +24,8 @@
     "./profile": "./lib/actions/profile.db.ts",
     "./chat":"./lib/actions/chat.db.ts",
     "./prisma-client": "./lib/prisma.ts",
-    "./chat-participant":"./lib/actions/chatParticipant.db.ts"
+    "./chat-participant":"./lib/actions/chatParticipant.db.ts",
+    "./message":"./lib/actions/message.db.ts"
   },
   "packageManager": "pnpm@10.23.0"
 }

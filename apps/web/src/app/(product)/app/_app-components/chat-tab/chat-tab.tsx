@@ -21,7 +21,6 @@ export function ChatTab() {
     const isMobile = useIsMobile();
 
     return (
-        <ChatListProvider>
             <Sheet
                 open={isMobile ? true : isOpen}
                 onOpenChange={setIsOpen}
@@ -45,6 +44,5 @@ export function ChatTab() {
                     </main>
                 </SheetContent>
             </Sheet>
-        </ChatListProvider>
     );
 }
