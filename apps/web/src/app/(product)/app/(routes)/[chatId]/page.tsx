@@ -9,6 +9,7 @@ import SendMessageForm from "../../_app-components/chat/send-message";
 import { getPersonName } from "@/lib/utils";
 import MessageArea from "../../_app-components/chat/message-area";
 import { useIsMobile } from "@/hooks/use-mobile";
+import ChatLoading from "../../_app-components/chat/loading/chat-loading";
 
 export default function ChatPage() {
     const { chatId } = useParams();
@@ -24,8 +25,8 @@ export default function ChatPage() {
         setIsMessageTabOpen(false);
     }, [isMobile]);
 
-    if (isLoading) {
-        return <div>loading....</div>;
+    if (isLoading ) {
+        return <ChatLoading/>;
     }
 
     if (!chat) {

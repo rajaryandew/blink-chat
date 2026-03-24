@@ -14,7 +14,7 @@ export default function MessageArea({
     }, [messages]);
 
     return (
-        <ScrollArea className="mt-3 mx-2  flex-1 overflow-y-scroll ">
+        <ScrollArea className="mt-3 mx-2 flex-1 overflow-y-scroll ">
             <div className="flex gap-1 flex-col">
                 {messages}
                 <div ref={scrollRef}></div>

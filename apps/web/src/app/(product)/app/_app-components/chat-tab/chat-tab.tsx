@@ -7,18 +7,15 @@ import {
     SheetTitle,
 } from "@/components/ui/sheet";
 import { useContext } from "react";
-import { ChatListProvider, MessageTabContext } from "../../contexts";
+import { MessageTabContext } from "../../contexts";
 import { ChatSearch } from "./chat-search";
 import { ChatList } from "./chat-list";
 import { Separator } from "@/components/ui/separator";
 import { ChatCreate } from "./chat-add";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export function ChatTab() {
     const { isMessageTabOpen: isOpen, setIsMessageTabOpen: setIsOpen } =
         useContext(MessageTabContext)!;
-
-    const isMobile = useIsMobile();
 
     return (
         <Sheet

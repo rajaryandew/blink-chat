@@ -2,10 +2,11 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatItem } from "./chat-item";
 import { ChatListContext } from "../../contexts";
-import { useContext, useEffect, useEffectEvent } from "react";
+import { useContext, useEffect } from "react";
 import { authClient } from "@/lib/auth/auth-client";
 import { handleChatCreated } from "@/lib/client-handlers/chat.handlers";
 import { socket } from "@/lib/socket/socket";
+import { ChatItemLoading } from "./chat-list-loading";
 
 export function ChatList() {
     const { data: session, isPending } = authClient.useSession();
@@ -20,12 +21,15 @@ export function ChatList() {
         };
     });
 
-    if (chatList === null) {
-        return <div>...loading</div>;
-    }
-
-    if (isPending) {
-        return <div>...loading</div>;
+    if (chatList === null || isPending ) {
+        return (
+            <main>
+                <ChatItemLoading />
+                <ChatItemLoading />
+                <ChatItemLoading />
+                <ChatItemLoading />
+            </main>
+        );
     }
 
     const list = chatList.map((chat) => (
