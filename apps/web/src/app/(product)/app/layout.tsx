@@ -21,14 +21,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <SidebarProvider defaultOpen={false}>
             <MessageTabProvider>
                 <AppSidebar />
-                <SidebarInset>
-                    <main className="relative h-full overflow-hidden flex flex-row">
+
+                    <main className="relative overflow-hidden w-full flex flex-row">
                         <ChatListProvider>
                             <ChatTab />
                             {children}
                         </ChatListProvider>
                     </main>
-                </SidebarInset>
             </MessageTabProvider>
         </SidebarProvider>
     );

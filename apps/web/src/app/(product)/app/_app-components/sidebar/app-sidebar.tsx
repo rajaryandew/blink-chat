@@ -15,8 +15,8 @@ import {
 
 export function AppSidebar() {
     return (
-        <Sidebar className="py-6" variant="inset" collapsible="icon">
-            <SidebarHeader className="mb-2 grid place-items-center">
+        <Sidebar className="w-16 h-screen" variant="inset" collapsible="none">
+            <SidebarHeader className="mb-2 mt-6 grid place-items-center">
                 <AppIcon />
             </SidebarHeader>
             <Separator />

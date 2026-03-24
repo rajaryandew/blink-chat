@@ -22,7 +22,7 @@ export function ChatItem({
     const formattedDate =lastMessage ? formatDistance(new Date(), lastMessage.timestamp) : null;
 
     return (
-        <Link href={`app/${metadata.id}`}>
+        <Link href={`/app/${metadata.id}`}>
             <div className="h-18 flex items-center gap-2">
                 <Avatar className="size-12 grid place-items-center ">
                     <AvatarImage src={undefined} />
