@@ -4,6 +4,7 @@ import {
     SidebarContent,
     SidebarFooter,
     SidebarHeader,
+    useSidebar,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -15,7 +16,7 @@ import {
 
 export function AppSidebar() {
     return (
-        <Sidebar className="w-16 h-screen" variant="inset" collapsible="none">
+        <Sidebar className="w-16 h-screen hidden md:flex " variant="inset" collapsible="none">
             <SidebarHeader className="mb-2 mt-6 grid place-items-center">
                 <AppIcon />
             </SidebarHeader>

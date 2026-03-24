@@ -4,6 +4,8 @@ import { UserCircle } from "@/components/ui/icons";
 import { Chat } from "@repo/schema/chat";
 import Link from "next/link";
 import { getPersonName } from "@/lib/utils";
+import { useContext } from "react";
+import { MessageTabContext } from "../../contexts";
 
 export function ChatItem({
     metadata,
@@ -12,6 +14,9 @@ export function ChatItem({
     metadata: Chat;
     userId: string;
 }) {
+
+    const {setIsMessageTabOpen} = useContext(MessageTabContext)!
+
     const lastMessage =
         metadata.messages.length >= 1
             ? metadata.messages.reduce((previousLast, message) => {
@@ -25,7 +30,7 @@ export function ChatItem({
         : null;
 
     return (
-        <Link href={`/app/${metadata.id}`}>
+        <Link prefetch href={`/app/${metadata.id}`} >
             <div className="h-18 flex items-center gap-2">
                 <Avatar className="size-12 grid place-items-center ">
                     <AvatarImage src={undefined} />

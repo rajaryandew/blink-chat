@@ -21,28 +21,28 @@ export function ChatTab() {
     const isMobile = useIsMobile();
 
     return (
-            <Sheet
-                open={isMobile ? true : isOpen}
-                onOpenChange={setIsOpen}
-                modal={false}
+        <Sheet
+            open={isOpen}
+            onOpenChange={setIsOpen}
+            modal={false}
+        >
+            <SheetContent
+                className="absolute inset-0 w-screen sm:w-[400px]"
+                side="left"
             >
-                <SheetContent
-                    className="absolute md:w-[400px] sm:w-screen"
-                    side="left"
-                >
-                    <SheetHeader className="flex flex-row items-center justify-between">
-                        <SheetTitle className="text-xl font-bold">
-                            BlinkChat
-                        </SheetTitle>
-                        <SheetClose className="hidden" />
-                        <ChatCreate />
-                    </SheetHeader>
-                    <main className="px-4 py-3 grid gap-5">
-                        <ChatSearch />
-                        <Separator />
-                        <ChatList />
-                    </main>
-                </SheetContent>
-            </Sheet>
+                <SheetHeader className="flex flex-row items-center justify-between">
+                    <SheetTitle className="text-xl font-bold">
+                        BlinkChat
+                    </SheetTitle>
+                    <SheetClose className="hidden" />
+                    <ChatCreate />
+                </SheetHeader>
+                <main className="px-4 py-3 grid gap-5">
+                    <ChatSearch />
+                    <Separator />
+                    <ChatList />
+                </main>
+            </SheetContent>
+        </Sheet>
     );
 }

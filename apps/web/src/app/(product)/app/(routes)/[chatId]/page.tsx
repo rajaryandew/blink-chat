@@ -9,6 +9,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import SendMessageForm from "../../_app-components/chat/send-message";
 import { getPersonName } from "@/lib/utils";
 import MessageArea from "../../_app-components/chat/message-area";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function ChatPage() {
     const { chatId } = useParams();
@@ -17,12 +18,12 @@ export default function ChatPage() {
     const { setIsMessageTabOpen, isMessageTabOpen } =
         useContext(MessageTabContext)!;
     const chat = chatList?.find((c) => c.id === chatId);
-
+    const isMobile = useIsMobile
     const { data: session } = authClient.useSession();
 
     useEffect(() => {
         setIsMessageTabOpen(false);
-    }, []);
+    }, [isMobile]);
 
     if (isLoading) {
         return <div>loading....</div>;
