@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { socketConnect } from "@/lib/socket/socket";
 import { authClient } from "@/lib/auth/auth-client";
 import { ChatTab } from "./_app-components/chat-tab/chat-tab";
-import { handleMessgeCreated } from "@/lib/client-handlers/message.handlers";
+import { handleMessageCreated } from "@/lib/client-handlers/message.handlers";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const { data: session } = authClient.useSession();

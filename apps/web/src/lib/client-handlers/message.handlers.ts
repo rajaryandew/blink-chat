@@ -9,11 +9,10 @@ export function handleCreateMessage(input: CreateMessageInput) {
     createMessage(input);
 }
 
-export function handleMessgeCreated(
+export function handleMessageCreated(
     setChatList: Dispatch<SetStateAction<Chat[] | null>>,
 ) {
     socket.on("message:created", (response) => {
-        console.log("Hellosdfasdfa")
         if (response.success === false) {
             toast.error("SOMETHING WENT WRONG!!!!!");
             return;

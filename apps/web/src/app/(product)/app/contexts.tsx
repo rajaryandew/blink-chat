@@ -9,7 +9,7 @@ import {
 } from "react";
 import { Chat } from "@repo/schema/chat";
 import { handleGetChats } from "@/lib/client-handlers/chat.handlers";
-import { handleMessgeCreated } from "@/lib/client-handlers/message.handlers";
+import { handleMessageCreated } from "@/lib/client-handlers/message.handlers";
 import { connectToRooms, socket } from "@/lib/socket/socket";
 
 // messageTabContext
@@ -58,7 +58,7 @@ export function ChatListProvider({ children }: { children: React.ReactNode }) {
                 setIsLoading(false);
             });
         
-        handleMessgeCreated(setChatList);
+        handleMessageCreated(setChatList);
 
         return () => {
             socket.off("chat:created");
