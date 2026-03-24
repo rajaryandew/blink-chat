@@ -5,7 +5,6 @@ import { ChatListContext, MessageTabContext } from "../../contexts";
 import { authClient } from "@/lib/auth/auth-client";
 import Message from "../../_app-components/chat/message";
 import ChatHeader from "../../_app-components/chat/chat-header";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import SendMessageForm from "../../_app-components/chat/send-message";
 import { getPersonName } from "@/lib/utils";
 import MessageArea from "../../_app-components/chat/message-area";
@@ -51,7 +50,7 @@ export default function ChatPage() {
     });
 
     return (
-        <main className="w-full h-screen flex flex-col">
+        <main className="w-full h-dvh flex flex-col">
             <ChatHeader name={name} />
             <MessageArea messages={messages}/>
             <SendMessageForm chat={chat} />

@@ -10,7 +10,7 @@ export default function ChatHeader({name}:{name:string}){
     const {setIsMessageTabOpen} = useContext(MessageTabContext)!
 
     return(
-        <div className="p-2 px-6 h-[79px] gap-3 bg-sidebar-accent flex flex-row w-full rounded-t-xl">
+        <div className="p-2 px-6 h-[79px] gap-3 bg-sidebar-accent flex flex-row w-full sm:rounded-t-xl">
             <Link href="/app" onClick={() => setIsMessageTabOpen(true)} className="content-center sm:hidden">
                 <ArrowLeft/>
             </Link>
