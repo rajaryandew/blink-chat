@@ -39,7 +39,7 @@ export default function SendMessageForm({ chat }: { chat: Chat }) {
                 setValue('text',"")
             })}
         >
-            <Input className="rounded-4xl" {...register("text")} />
+            <Input className="rounded-4xl" maxLength={500} {...register("text")} />
             <Button type="submit" disabled={isSubmitting} variant="ghost">
                 <Send className="size-6" />
             </Button>

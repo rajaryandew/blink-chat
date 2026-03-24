@@ -15,8 +15,8 @@ export default function Message({
         <div className={cn("flex justify-end", align)}>
             <p
                 className={cn(
-                    "p-3 min-w-40  rounded-xl",
-                    `${alignment === "left" ? "dark:bg-slate-800 bg-slate-100 rounded-tl-none text-left" : "bg-indigo-500 dark:bg-indigo-900 rounded-tr-none text-right"}`,
+                    "p-3 w-fit max-w-[60vw] wrap-break-word rounded-xl",
+                    `${alignment === "left" ? "dark:bg-slate-800 bg-slate-100 rounded-tl-none text-left" : "bg-indigo-500 dark:bg-indigo-900 rounded-tr-none"}`,
                 )}
             >
                 {text}

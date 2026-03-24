@@ -13,7 +13,7 @@ export function ChatList() {
     const { chatList, setChatList } = useContext(ChatListContext)!;
 
     useEffect(() => {
-        handleChatCreated(setChatList);
+        handleChatCreated(setChatList,chatList);
 
         return () => {
             socket.off("chat:created");

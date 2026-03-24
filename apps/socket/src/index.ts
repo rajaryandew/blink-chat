@@ -21,7 +21,7 @@ io.on("connection", async (socket) => {
         console.log("user not authorized")
         socket.disconnect(true);
     }
-    
+    socket.join(socket.handshake.auth.userId)
     registerChatHandlers(socket, io);
     registerMessageHandlers(socket,io)
     console.log(`someone connected with socketId:${socket.id}`);

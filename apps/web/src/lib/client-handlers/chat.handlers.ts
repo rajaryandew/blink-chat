@@ -5,8 +5,8 @@ import { getChats } from "../server-actions/chat.actions";
 import { ChatCreatedResponse } from "@repo/schema/socket";
 import { createChat } from "../socket/handlers/chat.socket";
 import { Chat, CreateChatInput } from "@repo/schema/chat";
-import { socket } from "../socket/socket";
-import { Dispatch, SetStateAction } from "react"
+import { connectToRooms, socket } from "../socket/socket";
+import { Dispatch, SetStateAction } from "react";
 
 export async function handleGetChats() {
     const response = await getChats();
@@ -25,12 +25,15 @@ export async function handleGetChats() {
     return response.chats;
 }
 
-export async function handleCreateChat(chatInput:CreateChatInput){
-    createChat(chatInput)
+export async function handleCreateChat(chatInput: CreateChatInput) {
+    createChat(chatInput);
 }
 
-export async function handleChatCreated(setChatList:Dispatch<SetStateAction<Chat[] | null>>) {
-    socket.on("chat:created",(response) => {
+export async function handleChatCreated(
+    setChatList: Dispatch<SetStateAction<Chat[] | null>>,
+    chatList: Chat[] | null,
+) {
+    socket.on("chat:created", (response) => {
         if (response.success === false) {
             switch (response.data.message) {
                 case "CHAT_ALREADY_EXISTS":
@@ -57,10 +60,15 @@ export async function handleChatCreated(setChatList:Dispatch<SetStateAction<Chat
                     );
                     break;
             }
-            return
+            return;
         }
 
-        return setChatList(v => [response.data,...(v ?? [])])
-    })
-}
+        return setChatList((v) => {
+            const data = [response.data, ...(v ?? [])];
 
+            connectToRooms(data)
+
+            return data
+        });
+    });
+}

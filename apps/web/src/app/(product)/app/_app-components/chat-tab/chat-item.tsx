@@ -1,7 +1,7 @@
 import { formatDistance } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserCircle } from "@/components/ui/icons";
-import { Chat } from "@repo/schema/chat"
+import { Chat } from "@repo/schema/chat";
 import Link from "next/link";
 import { getPersonName } from "@/lib/utils";
 
@@ -12,14 +12,17 @@ export function ChatItem({
     metadata: Chat;
     userId: string;
 }) {
-    const lastMessage = metadata.messages.length >= 1
-        ? metadata.messages.reduce((previousLast, message) => {
-              return previousLast.timestamp > message.timestamp
-                  ? message
-                  : previousLast;
-          })
+    const lastMessage =
+        metadata.messages.length >= 1
+            ? metadata.messages.reduce((previousLast, message) => {
+                  return previousLast.timestamp < message.timestamp
+                      ? message
+                      : previousLast;
+              })
+            : null;
+    const formattedDate = lastMessage
+        ? formatDistance(Date.now(), lastMessage.timestamp)
         : null;
-    const formattedDate =lastMessage ? formatDistance(new Date(), lastMessage.timestamp) : null;
 
     return (
         <Link href={`/app/${metadata.id}`}>
@@ -32,10 +35,11 @@ export function ChatItem({
                 </Avatar>
                 <div className="w-full gap-1 flex flex-col justify-center">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-bold">
-                            {
-                                getPersonName(metadata,userId)
-                            }
+                        <h3
+                            className="text-sm font-bold"
+                            suppressHydrationWarning
+                        >
+                            {getPersonName(metadata, userId)}
                         </h3>
                         <p
                             className="text-xs text-gray-100/70"

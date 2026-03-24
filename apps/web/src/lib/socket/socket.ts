@@ -15,7 +15,6 @@ export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
 
 socket.on("connect", () => {
     console.log("connected");
-    console.log(socket.id);
 });
 
 socket.on("disconnect", () => {
@@ -30,7 +29,6 @@ export function socketConnect(userId: string) {
 }
 
 export function connectToRooms(chatList: Chat[] | null) {
-    console.log("hitted connectToRooms")
     if(!chatList) return
     socket.emit("chat:connect", chatList);
 }
