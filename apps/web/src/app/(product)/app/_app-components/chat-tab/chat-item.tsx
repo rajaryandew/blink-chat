@@ -4,18 +4,14 @@ import { UserCircle } from "@/components/ui/icons";
 import { Chat } from "@repo/schema/chat";
 import Link from "next/link";
 import { getPersonName } from "@/lib/utils";
-import { useContext } from "react";
-import { MessageTabContext } from "../../contexts";
 
 export function ChatItem({
     metadata,
-    userId,
+    name,
 }: {
     metadata: Chat;
-    userId: string;
+    name: string | undefined;
 }) {
-
-    const {setIsMessageTabOpen} = useContext(MessageTabContext)!
 
     const lastMessage =
         metadata.messages.length >= 1
@@ -44,7 +40,7 @@ export function ChatItem({
                             className="text-sm font-bold"
                             suppressHydrationWarning
                         >
-                            {getPersonName(metadata, userId)}
+                            {name}
                         </h3>
                         <p
                             className="text-xs text-gray-100/70"

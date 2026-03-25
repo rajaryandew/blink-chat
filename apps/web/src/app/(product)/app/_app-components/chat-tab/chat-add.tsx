@@ -20,7 +20,6 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { authClient } from "@/lib/auth/auth-client";
 import { handleCreateChat } from "@/lib/client-handlers/chat.handlers";
-import { createChat } from "@/lib/socket/handlers/chat.socket";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateChatInput, createChatSchema } from "@repo/schema/chat";
 import { MessageSquarePlus } from "lucide-react";
@@ -29,22 +28,23 @@ import { useForm } from "react-hook-form";
 
 export function ChatCreate() {
     const {data:session} = authClient.useSession()
-    useEffect(() => {
-        if(!session?.user.id) return
-        setValue("self_userId", session.user.id)
-    },[session?.user.id]);
+    
     const {
         register,
         formState: { errors, isSubmitting },
         handleSubmit,
         setValue,
-        setError
     } = useForm<CreateChatInput>({
         resolver: zodResolver(createChatSchema),
         defaultValues: {
             isGroup: false,
         },
     });
+
+    useEffect(() => {
+        if (!session?.user.id) return;
+        setValue("self_userId", session.user.id);
+    }, [session?.user.id]);
 
     const [open, setOpen] = useState(false)
 

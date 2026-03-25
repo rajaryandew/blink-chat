@@ -15,10 +15,10 @@ export default function ChatPage() {
     const { chatId } = useParams();
 
     const { chatList, isLoading } = useContext(ChatListContext)!;
-    const { setIsMessageTabOpen, isMessageTabOpen } =
+    const { setIsMessageTabOpen } =
         useContext(MessageTabContext)!;
     const chat = chatList?.find((c) => c.id === chatId);
-    const isMobile = useIsMobile
+    const isMobile = useIsMobile()
     const { data: session } = authClient.useSession();
 
     useEffect(() => {
@@ -30,14 +30,14 @@ export default function ChatPage() {
     }
 
     if (!chat) {
-        return <div>Chat doesn't exists!</div>;
+        return <div>Chat doesn&apos;t exists!</div>;
     }
-    const name = getPersonName(chat!, session?.user.id!) || "";
+    const name = getPersonName(chat, session?.user.id!) || "";
 
     const messages = chat.messages.map((message) => {
         const alignment =
             message.chatParticipantId ===
-            chat.chatParticipants.find((p) => p.userId === session?.user.id!)!
+            chat.chatParticipants.find((p) => p.userId === session?.user.id)!
                 .id
                 ? "right"
                 : "left";

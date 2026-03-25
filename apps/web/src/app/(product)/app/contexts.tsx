@@ -71,3 +71,20 @@ export function ChatListProvider({ children }: { children: React.ReactNode }) {
         </ChatListContext.Provider>
     );
 }
+
+type ChatSearchContextType = {
+    searchValue:string,
+    setSearchValue: Dispatch<SetStateAction<string>>
+}
+
+export const ChatSearchContext = createContext<ChatSearchContextType | null>(null)
+export function ChatSearchProvider({children}:{children:React.ReactNode}){
+
+    const [searchValue,setSearchValue] = useState("")
+
+    return(
+        <ChatSearchContext.Provider value={{searchValue,setSearchValue}} >
+            {children}
+        </ChatSearchContext.Provider>
+    )
+}
