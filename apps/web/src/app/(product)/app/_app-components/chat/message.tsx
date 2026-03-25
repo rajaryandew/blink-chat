@@ -21,7 +21,7 @@ export default function Message({
     alignment: "left" | "right"; // left: Received, right: Sent
     setReplyAction: UseFormSetValue<CreateMessageInput>;
 }) {
-    const align = `items-${alignment === "left" ? "start" : "end"}`;
+    const align = `${alignment === "left" ? "items-start" : "items-end"}`;
     const x = useMotionValue(0);
     const scale = useTransform(x, [-100, 0, 100], [2.5, 0, -2.5]);
 
@@ -39,9 +39,10 @@ export default function Message({
             style={{ x }}
         >
             <div
-                className={cn("mt-2 bg-slate-800/20 w-fit p-3 rounded-2xl flex flex-col", alignment === "left" ? "rounded-bl-none" : "rounded-br-none")}
+                className={cn(" bg-slate-800/20 w-fit p-3 rounded-3xl flex flex-col", alignment === "left" ? "rounded-bl-none" : "rounded-")}
                 hidden={!metadata.replyTo}
             >
+                <p className="text-xs font-medium opacity-20">Reply to</p>
                 <p className="opacity-80 px-1">
                     {chat.messages.find((m) => m.id === metadata.replyTo)?.text}
                 </p>
