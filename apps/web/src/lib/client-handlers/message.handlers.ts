@@ -1,3 +1,4 @@
+"use client"
 import { CreateMessageInput } from "@repo/schema/message";
 import { createMessage } from "../socket/handlers/chat.socket";
 import { socket } from "../socket/socket";
@@ -6,6 +7,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Chat } from "@repo/schema/chat";
 
 export function handleCreateMessage(input: CreateMessageInput) {
+    console.log("Heieeiei")
     createMessage(input);
 }
 
@@ -14,6 +16,7 @@ export function handleMessageCreated(
 ) {
     socket.on("message:created", (response) => {
         if (response.success === false) {
+            console.log(response)
             toast.error("SOMETHING WENT WRONG!!!!!");
             return;
         }

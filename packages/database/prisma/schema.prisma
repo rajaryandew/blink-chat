@@ -123,6 +123,9 @@ model Message {
   id        Int      @id @default(autoincrement())
   text      String
   timestamp DateTime
+  replyTo   Int?
+  replyMessage Message? @relation("Reply",fields: [replyTo],references: [id])
+  replies Message[] @relation("Reply")
 
   chatId String
   chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
