@@ -48,11 +48,11 @@ export default function ChatPage() {
                 : "left";
         return (
             <Message
+                chat={chat}
+                metadata={message}
                 alignment={alignment}
-                text={message.text}
                 key={`${message.chatId}:${message.id}`}
                 setReplyAction={form.setValue}
-                messageId={message.id}
             />
         );
     });

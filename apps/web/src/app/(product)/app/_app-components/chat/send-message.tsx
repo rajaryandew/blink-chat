@@ -27,6 +27,7 @@ export default function SendMessageForm({
         watch,
         formState: { isSubmitting },
     } = sendMessageForm;
+    const replyTo = watch("replyTo");
 
     useEffect(() => {
         if (!session?.user.id) return;
@@ -37,13 +38,11 @@ export default function SendMessageForm({
         setValue("chatId", chat.id);
     }, [session?.user.id]);
 
-    const replyTo = watch("replyTo");
-
     return (
         <form
-            className=" flex flex-col bg-[#111214] px-3"
+            className=" flex flex-col bg-[#f4f4f5] dark:bg-[#111214] px-3"
             onSubmit={handleSubmit((input) => {
-                handleCreateMessage(input);
+                handleCreateMessage({ ...input, replyTo });
                 setValue("text", "");
                 setValue("replyTo", null);
             })}
@@ -59,14 +58,15 @@ export default function SendMessageForm({
                     </p>
                 </div>
                 <Button
+                    type="button"
                     className="rounded-xl mt-1"
                     onClick={() => setValue("replyTo", null)}
                     variant="ghost"
                 >
-                    <X className="m-0"/>
+                    <X />
                 </Button>
             </div>
-            <div className={cn("flex mb-3",!replyTo ? "mt-3" : "mt-2")}>
+            <div className={cn("flex mb-3", !replyTo ? "mt-3" : "mt-2")}>
                 <Input
                     className="rounded-4xl"
                     maxLength={500}

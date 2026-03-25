@@ -7,7 +7,6 @@ import { Dispatch, SetStateAction } from "react";
 import { Chat } from "@repo/schema/chat";
 
 export function handleCreateMessage(input: CreateMessageInput) {
-    console.log("Heieeiei")
     createMessage(input);
 }
 

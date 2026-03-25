@@ -6,7 +6,7 @@ export const messageSchema = z.object({
     timestamp:z.date(),
     chatId:z.uuid(),
     chatParticipantId:z.int(),
-    replyTo: z.int().nullish()
+    replyTo: z.int().nullish(),
 })
 
 export type Message = z.infer<typeof messageSchema>
