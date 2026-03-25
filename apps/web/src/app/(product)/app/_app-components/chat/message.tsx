@@ -39,7 +39,7 @@ export default function Message({
             style={{ x }}
         >
             <div
-                className={cn(" bg-slate-800/20 w-fit p-3 rounded-3xl flex flex-col", alignment === "left" ? "rounded-bl-none" : "rounded-")}
+                className={cn(" bg-slate-800/20 mt-2 w-fit p-3 rounded-3xl flex flex-col", alignment === "left" ? "rounded-bl-none" : "rounded-br-none")}
                 hidden={!metadata.replyTo}
             >
                 <p className="text-xs font-medium opacity-20">Reply to</p>
