@@ -15,3 +15,15 @@ export async function createMessageRecord(input: CreateMessageInput) {
         throw mapDatabaseError(error);
     }
 }
+
+export async function deleteMessageRecord(messageId:number){
+    try {
+        await prisma.message.delete({
+            where:{
+                id:messageId
+            }
+        })
+    } catch (error) {
+        throw mapDatabaseError(error)
+    }
+}

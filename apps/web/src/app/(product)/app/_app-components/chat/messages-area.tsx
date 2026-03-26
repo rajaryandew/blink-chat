@@ -1,8 +1,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Message from "./message";
 import { useEffect, useRef } from "react";
 
-export default function MessageArea({
+export default function MessagesArea({
     messages,
 }: {
     messages: React.ReactNode;

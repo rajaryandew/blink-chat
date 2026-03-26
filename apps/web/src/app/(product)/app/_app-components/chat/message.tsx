@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Reply } from "lucide-react";
+import { Reply, Trash } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import { UseFormSetValue } from "react-hook-form";
 import {
@@ -9,7 +9,19 @@ import {
     Message as MessageType,
 } from "@repo/schema/message";
 import { Chat } from "@repo/schema/chat";
+import {
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import { MessageReplied } from "./message-replied";
+import { MessageText } from "./message-text";
+import { useState } from "react";
+import { deleteMessage } from "@/lib/socket/handlers/chat.socket";
+import { authClient } from "@/lib/auth/auth-client";
 
+const { data: session } = await authClient.getSession();
 export default function Message({
     metadata,
     chat,
@@ -23,51 +35,69 @@ export default function Message({
 }) {
     const align = `${alignment === "left" ? "items-start" : "items-end"}`;
     const x = useMotionValue(0);
+    const [messageSize, setMessageSize] = useState(1);
     const scale = useTransform(x, [-100, 0, 100], [2.5, 0, -2.5]);
 
     return (
-        <motion.div
-            className={cn("flex flex-col justify-center gap-1", align)}
-            drag="x"
-            dragConstraints={{
-                left: 0,
-                right: 0,
-            }}
-            onDragEnd={() => setReplyAction("replyTo", metadata.id)}
-            dragElastic={0.03}
-            dragDirectionLock
-            style={{ x }}
-        >
-            <div
-                className={cn(" bg-slate-800/20 mt-2 w-fit p-3 rounded-3xl flex flex-col", alignment === "left" ? "rounded-bl-none" : "rounded-br-none")}
-                hidden={!metadata.replyTo}
+        <div className={cn("flex flex-col", align)}>
+            <ContextMenu
+                onOpenChange={(open) => {
+                    if (open) {
+                        return setMessageSize(0.95);
+                    }
+                    setMessageSize(1);
+                }}
             >
-                <p className="text-xs font-medium opacity-20">Reply to</p>
-                <p className="opacity-80 px-1">
-                    {chat.messages.find((m) => m.id === metadata.replyTo)?.text}
-                </p>
-            </div>
-            <div className="flex items-center">
-                <p
-                    className={cn(
-                        "p-3 w-fit max-w-[60vw] wrap-break-word rounded-xl order-2",
-                        `${alignment === "left" ? "dark:bg-slate-800 bg-slate-100 rounded-tl-none text-left" : "bg-indigo-500 dark:bg-indigo-900 rounded-tr-none"}`,
-                    )}
-                >
-                    {metadata.text}
-                </p>
-                <motion.div
-                    className={cn(
-                        alignment === "left"
-                            ? "order-1 -left-7 -scale-y-100"
-                            : "order-3 -right-6",
-                        "absolute ",
-                    )}
-                    style={{ scale }}
-                >
-                    <Reply />
-                </motion.div>
-            </div>
-        </motion.div>
+                <ContextMenuTrigger>
+                    <motion.div
+                        className={cn(
+                            "flex flex-col justify-center w-fit gap-1",
+                            align,
+                        )}
+                        drag="x"
+                        layout
+                        dragConstraints={{
+                            left: 0,
+                            right: 0,
+                        }}
+                        onDragEnd={() => setReplyAction("replyTo", metadata.id)}
+                        dragElastic={0.03}
+                        dragDirectionLock
+                        style={{ x }}
+                        animate={{ scale: messageSize }}
+                    >
+                        <MessageReplied
+                            alignment={alignment}
+                            chat={chat}
+                            metadata={metadata}
+                        />
+
+                        <MessageText
+                            alignment={alignment}
+                            scale={scale}
+                            text={metadata.text}
+                        />
+                    </motion.div>
+                </ContextMenuTrigger>
+                <ContextMenuContent
+                    hidden={
+                        metadata.chatParticipantId ===
+                        chat.chatParticipants.find(
+                            (v) => v.userId === session?.user.id!,
+                        )?.id
+                            ? false
+                            : true
+                    }
+                > 
+                    <ContextMenuItem
+                        onClick={() => deleteMessage(metadata)}
+                        variant="destructive"
+                    >
+                        <Trash />
+                        Delete
+                    </ContextMenuItem>
+                </ContextMenuContent>
+            </ContextMenu>
+        </div>
     );
 }

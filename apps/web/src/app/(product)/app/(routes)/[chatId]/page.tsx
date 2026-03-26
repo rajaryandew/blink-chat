@@ -7,7 +7,7 @@ import Message from "../../_app-components/chat/message";
 import ChatHeader from "../../_app-components/chat/chat-header";
 import SendMessageForm from "../../_app-components/chat/send-message";
 import { getPersonName } from "@/lib/utils";
-import MessageArea from "../../_app-components/chat/message-area";
+import MessagesArea from "../../_app-components/chat/messages-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ChatLoading from "../../_app-components/chat/loading/chat-loading";
 import { useForm } from "react-hook-form";
@@ -60,7 +60,7 @@ export default function ChatPage() {
     return (
         <main className="w-full h-dvh flex flex-col">
             <ChatHeader name={name} />
-            <MessageArea messages={messages} />
+            <MessagesArea messages={messages} />
             <SendMessageForm chat={chat} sendMessageForm={form} />
         </main>
     );

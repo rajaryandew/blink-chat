@@ -1,30 +1,16 @@
-import { Chat, CreateChatInput } from "./chat.schema";
-import { CreateMessageInput, Message } from "./message.schema";
+import { Chat, ChatCreatedResponse, CreateChatInput } from "./chat.schema";
+import { CreateMessageInput, Message, MessageCreatedResponse, MessageDeletedResponse } from "./message.schema";
 
-export type ChatCreatedResponse =
-    | {
-          success: true;
-          data: Chat;
-      }
-    | { success: false; data: { message: string; cause?: unknown } };
-
-export type MessageCreatedResponse =
-    | {
-          success: true;
-          data: Message;
-      }
-    | {
-          success: false;
-          data: { message: string; cause?: unknown };
-      };
 export interface ServerToClientEvents {
     "chat:created": (response: ChatCreatedResponse) => void;
     "message:created": (response: MessageCreatedResponse) => void;
+    "message:deleted":(response:MessageDeletedResponse) => void;
     unauthorized: () => void;
 }
 
 export interface ClientToServerEvents {
     "chat:create": (chatInput: CreateChatInput) => void;
     "message:create": (messageInput: CreateMessageInput) => void;
+    "message:delete":(message:Message) => void
     "chat:connect": (chatList: Chat[]) => void;
 }

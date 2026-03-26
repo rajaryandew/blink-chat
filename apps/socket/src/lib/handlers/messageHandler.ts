@@ -1,4 +1,4 @@
-import { createMessageRecord } from "@repo/database/message";
+import { createMessageRecord, deleteMessageRecord } from "@repo/database/message";
 import { ServerType, SocketType } from "../..";
 import { AppError, DatabaseError } from "@repo/error";
 
@@ -18,4 +18,14 @@ export async function registerMessageHandlers(
             });
         }
     });
+
+    socket.on("message:delete",async (message) => {
+        try {
+            await deleteMessageRecord(message.id)
+            io.to(message.chatId).emit("message:deleted",{success:true,message})
+        } catch (error) {
+            const e = new AppError("ERROR",{cause:error})
+            socket.emit("message:deleted",{success:false,error:{message:e.message,cause:e.cause}})
+        }
+    })
 }
