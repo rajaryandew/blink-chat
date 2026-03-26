@@ -15,11 +15,8 @@ export async function registerChatHandlers(socket: SocketType, io: ServerType) {
     socket.on("chat:create", async (chatInput: CreateChatInput) => {
         try {
             const chat: Chat = await createChatRecord(chatInput);
-            socket.emit("chat:created", { success: true, data: chat });
             io.to(
-                chat.chatParticipants.find(
-                    (v) => v.userId !== socket.handshake.auth.userId!,
-                )?.userId!,
+                chat.chatParticipants.map(v => v.userId)
             ).emit("chat:created", { success: true, data: chat });
         } catch (error) {
             const e = error as DatabaseError;
