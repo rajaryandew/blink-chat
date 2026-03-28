@@ -2,7 +2,6 @@
 
 import { toast } from "sonner";
 import { getChats } from "../server-actions/chat.actions";
-import { ChatCreatedResponse } from "@repo/schema/socket";
 import { createChat } from "../socket/handlers/chat.socket";
 import { Chat, CreateChatInput } from "@repo/schema/chat";
 import { connectToRooms, socket } from "../socket/socket";
