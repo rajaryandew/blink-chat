@@ -55,7 +55,6 @@ export default function Message({
                             align,
                         )}
                         drag="x"
-                        layout
                         dragConstraints={{
                             left: 0,
                             right: 0,
