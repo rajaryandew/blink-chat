@@ -28,7 +28,7 @@ export default function ChatPage() {
     const form = useForm<CreateMessageInput>({
         resolver: zodResolver(createMessageSchema),
     });
-    const selfParticipantId = form.getValues("chatParticipantId");
+    const selfParticipantId = form.watch('chatParticipantId')
     const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     if(isSomeoneTyping){
