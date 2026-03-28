@@ -24,3 +24,8 @@ export type ChatCreatedResponse =
           data: Chat;
       }
     | { success: false; data: { message: string; cause?: unknown } };
+
+export type ChatTyping = {
+    chatParticipantId:number,
+    chatId:string
+}

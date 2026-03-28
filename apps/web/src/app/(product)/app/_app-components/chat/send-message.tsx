@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth/auth-client";
 import { handleCreateMessage } from "@/lib/client-handlers/message.handlers";
+import { socket } from "@/lib/socket/socket";
 import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Chat } from "@repo/schema/chat";
-import { CreateMessageInput, createMessageSchema } from "@repo/schema/message";
-import { Cross, Send, X } from "lucide-react";
-import { useEffect } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { CreateMessageInput } from "@repo/schema/message";
+import { Send, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { UseFormReturn } from "react-hook-form";
 
 export default function SendMessageForm({
     chat,
@@ -19,12 +19,12 @@ export default function SendMessageForm({
     sendMessageForm: UseFormReturn<CreateMessageInput>;
 }) {
     const { data: session } = authClient.useSession();
-
     const {
         setValue,
         handleSubmit,
         register,
         watch,
+        getValues,
         formState: { isSubmitting },
     } = sendMessageForm;
     const replyTo = watch("replyTo");
@@ -70,7 +70,15 @@ export default function SendMessageForm({
                 <Input
                     className="rounded-4xl"
                     maxLength={500}
-                    {...register("text")}
+                    {...register("text", {
+                        onChange: async () => {
+                            socket.emit("chat:typing", {
+                                chatId: getValues("chatId"),
+                                chatParticipantId:
+                                    getValues("chatParticipantId"),
+                            });
+                        },
+                    })}
                 />
                 <Button type="submit" disabled={isSubmitting} variant="ghost">
                     <Send className="size-6" />

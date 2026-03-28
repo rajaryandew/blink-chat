@@ -15,9 +15,10 @@ export async function registerChatHandlers(socket: SocketType, io: ServerType) {
     socket.on("chat:create", async (chatInput: CreateChatInput) => {
         try {
             const chat: Chat = await createChatRecord(chatInput);
-            io.to(
-                chat.chatParticipants.map(v => v.userId)
-            ).emit("chat:created", { success: true, data: chat });
+            io.to(chat.chatParticipants.map((v) => v.userId)).emit(
+                "chat:created",
+                { success: true, data: chat },
+            );
         } catch (error) {
             const e = error as DatabaseError;
             let mainError = new AppError("UNKNOWN_ERROR", { cause: error });
@@ -46,5 +47,9 @@ export async function registerChatHandlers(socket: SocketType, io: ServerType) {
                 data: { message: mainError.message },
             });
         }
+    });
+
+    socket.on("chat:typing", (personTyping) => {
+        io.to(`${personTyping.chatId}`).emit("chat:typing",personTyping)
     });
 }
