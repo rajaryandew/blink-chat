@@ -23,7 +23,7 @@ export type ChatCreatedResponse =
           success: true;
           data: Chat;
       }
-    | { success: false; data: { message: string; cause?: unknown } };
+    | { success: false; error: { message: string; cause?: unknown } };
 
 export type ChatTyping = {
     chatParticipantId:number,

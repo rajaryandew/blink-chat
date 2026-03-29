@@ -25,7 +25,7 @@ export type MessageCreatedResponse =
       }
     | {
           success: false;
-          data: { message: string; cause?: unknown };
+          error: { message: string; cause?: unknown };
       };
 
 export type MessageDeletedResponse =

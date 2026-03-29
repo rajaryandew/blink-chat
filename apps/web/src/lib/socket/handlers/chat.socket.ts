@@ -11,6 +11,10 @@ export function createMessage(input:CreateMessageInput){
     socket.emit("message:create",input)
 }
 
+export function updateMessage(message:Message,newText:string){
+    socket.emit("message:edit",message,newText)
+}
+
 export function deleteMessage(input:Message){
     socket.emit("message:delete",input)
 }

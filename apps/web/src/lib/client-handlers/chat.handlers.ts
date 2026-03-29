@@ -34,7 +34,7 @@ export async function handleChatCreated(
 ) {
     socket.on("chat:created", (response) => {
         if (response.success === false) {
-            switch (response.data.message) {
+            switch (response.error.message) {
                 case "CHAT_ALREADY_EXISTS":
                     toast.warning("Chat with this person exists!");
                     break;

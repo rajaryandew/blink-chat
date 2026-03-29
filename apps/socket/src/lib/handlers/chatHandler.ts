@@ -44,7 +44,7 @@ export async function registerChatHandlers(socket: SocketType, io: ServerType) {
             }
             socket.emit("chat:created", {
                 success: false,
-                data: { message: mainError.message },
+                error: { message: mainError.message },
             });
         }
     });

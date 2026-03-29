@@ -1,6 +1,5 @@
 
 import { Chat } from "@repo/schema/chat";
-import { Message } from "@repo/schema/message";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

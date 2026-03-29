@@ -2,15 +2,16 @@
 import {
     createContext,
     Dispatch,
+    ReactNode,
     SetStateAction,
     useEffect,
-    useMemo,
     useState,
 } from "react";
 import { Chat } from "@repo/schema/chat";
 import { handleGetChats } from "@/lib/client-handlers/chat.handlers";
 import { handleMessageEvents } from "@/lib/client-handlers/message.handlers";
 import { connectToRooms, socket } from "@/lib/socket/socket";
+import { Message } from "@repo/schema/message";
 
 // messageTabContext
 type MessageTabContextType = {
@@ -52,14 +53,13 @@ export function ChatListProvider({ children }: { children: React.ReactNode }) {
         handleGetChats()
             .then((response) => {
                 setChatList(response);
-                connectToRooms(response)
+                connectToRooms(response);
             })
             .finally(() => {
                 setIsLoading(false);
             });
-        
-        handleMessageEvents(setChatList);
 
+        handleMessageEvents(setChatList);
 
         return () => {
             socket.off("chat:created");
@@ -74,18 +74,50 @@ export function ChatListProvider({ children }: { children: React.ReactNode }) {
 }
 
 type ChatSearchContextType = {
-    searchValue:string,
-    setSearchValue: Dispatch<SetStateAction<string>>
-}
+    searchValue: string;
+    setSearchValue: Dispatch<SetStateAction<string>>;
+};
 
-export const ChatSearchContext = createContext<ChatSearchContextType | null>(null)
-export function ChatSearchProvider({children}:{children:React.ReactNode}){
+export const ChatSearchContext = createContext<ChatSearchContextType | null>(
+    null,
+);
+export function ChatSearchProvider({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    const [searchValue, setSearchValue] = useState("");
 
-    const [searchValue,setSearchValue] = useState("")
-
-    return(
-        <ChatSearchContext.Provider value={{searchValue,setSearchValue}} >
+    return (
+        <ChatSearchContext.Provider value={{ searchValue, setSearchValue }}>
             {children}
         </ChatSearchContext.Provider>
-    )
+    );
+}
+
+type MessageEditContextType = {
+    messageAction: "send" | "edit";
+    setMessageAction: Dispatch<SetStateAction<"send" | "edit">>;
+    messageEditing: Message | null;
+    setMessageEditing: Dispatch<SetStateAction<Message | null>>;
+};
+export const MessageEditContext = createContext<MessageEditContextType | null>(
+    null,
+);
+export function MessageEditProvider({ children }: { children: ReactNode }) {
+    const [messageAction, setMessageAction] = useState<"send" | "edit">("send");
+    const [messageEditing, setMessageEditing] = useState<Message | null>(null);
+
+    return (
+        <MessageEditContext.Provider
+            value={{
+                messageAction,
+                messageEditing,
+                setMessageAction,
+                setMessageEditing,
+            }}
+        >
+            {children}
+        </MessageEditContext.Provider>
+    );
 }

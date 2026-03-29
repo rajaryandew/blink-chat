@@ -2,14 +2,18 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth/auth-client";
-import { handleCreateMessage } from "@/lib/client-handlers/message.handlers";
+import {
+    handleCreateMessage,
+    handleEditMessage,
+} from "@/lib/client-handlers/message.handlers";
 import { socket } from "@/lib/socket/socket";
 import { cn } from "@/lib/utils";
 import { Chat } from "@repo/schema/chat";
 import { CreateMessageInput } from "@repo/schema/message";
 import { Send, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
+import { MessageEditContext } from "../../contexts";
 
 export default function SendMessageForm({
     chat,
@@ -19,6 +23,12 @@ export default function SendMessageForm({
     sendMessageForm: UseFormReturn<CreateMessageInput>;
 }) {
     const { data: session } = authClient.useSession();
+    const {
+        messageAction,
+        setMessageAction,
+        messageEditing,
+        setMessageEditing,
+    } = useContext(MessageEditContext)!;
     const {
         setValue,
         handleSubmit,
@@ -30,37 +40,63 @@ export default function SendMessageForm({
     const replyTo = watch("replyTo");
 
     useEffect(() => {
+        if (messageAction === "edit") {
+            setValue("text", messageEditing?.text || "");
+        }
+
         if (!session?.user.id) return;
         const id = chat.chatParticipants.find(
             (c) => c.userId === session.user.id,
         )?.id!;
         setValue("chatParticipantId", id);
         setValue("chatId", chat.id);
-    }, [session?.user.id]);
+    }, [session?.user.id, messageEditing]);
 
     return (
         <form
+            autoComplete="off"
             className=" flex flex-col bg-[#f4f4f5] dark:bg-[#111214] px-3"
             onSubmit={handleSubmit((input) => {
-                handleCreateMessage({ ...input, replyTo });
+                if (messageAction === "edit") {
+                    handleEditMessage(messageEditing, input.text);
+                } else if (messageAction === "send") {
+                    handleCreateMessage({ ...input });
+                }
                 setValue("text", "");
+                setMessageAction("send");
+                setMessageEditing(null);
                 setValue("replyTo", null);
             })}
         >
-            <div className=" border-b border-b-white/10 flex" hidden={!replyTo}>
+            <div
+                className=" border-b border-b-white/10 flex"
+                hidden={replyTo == null && messageAction === "send"}
+            >
                 <div className="flex-1">
-                    <h4 className="text-gray-400 font-semibold">Reply to</h4>
+                    <h4 className="text-gray-400 font-semibold">
+                        {messageAction === "send" ? "Reply to" : "Edit:"}
+                    </h4>
                     <p className="px-4 opacity-50 font-medium">
-                        {chat.messages
-                            .find((m) => m.id === replyTo)
-                            ?.text?.slice(0, 100)}
+                        {messageAction === "send"
+                            ? chat.messages
+                                  .find((m) => m.id === replyTo)
+                                  ?.text?.slice(0, 100)
+                            : messageEditing?.text.slice(0, 100)}
                         ...
                     </p>
                 </div>
                 <Button
                     type="button"
                     className="rounded-xl mt-1"
-                    onClick={() => setValue("replyTo", null)}
+                    onClick={() => {
+                        if (messageAction === "edit") {
+                            setValue("text", "");
+                        }
+
+                        setValue("replyTo", null);
+                        setMessageAction("send");
+                        setMessageEditing(null);
+                    }}
                     variant="ghost"
                 >
                     <X />
@@ -71,7 +107,7 @@ export default function SendMessageForm({
                     className="rounded-4xl"
                     maxLength={500}
                     {...register("text", {
-                        onChange: async () => {
+                        onChange: () => {
                             socket.emit("chat:typing", {
                                 chatId: getValues("chatId"),
                                 chatParticipantId:

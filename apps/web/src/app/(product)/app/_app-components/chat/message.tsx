@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Reply, Trash } from "lucide-react";
+import { Pencil, Reply, Trash } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import { UseFormSetValue } from "react-hook-form";
 import {
@@ -17,9 +17,10 @@ import {
 } from "@/components/ui/context-menu";
 import { MessageReplied } from "./message-replied";
 import { MessageText } from "./message-text";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { deleteMessage } from "@/lib/socket/handlers/chat.socket";
 import { authClient } from "@/lib/auth/auth-client";
+import { MessageEditContext } from "../../contexts";
 
 const { data: session } = await authClient.getSession();
 export default function Message({
@@ -34,6 +35,12 @@ export default function Message({
     setReplyAction: UseFormSetValue<CreateMessageInput>;
 }) {
     const align = `${alignment === "left" ? "items-start" : "items-end"}`;
+    const {
+        messageAction,
+        setMessageAction,
+        messageEditing,
+        setMessageEditing,
+    } = useContext(MessageEditContext)!;
     const x = useMotionValue(0);
     const [messageSize, setMessageSize] = useState(1);
     const scale = useTransform(x, [-100, 0, 100], [2.5, 0, -2.5]);
@@ -87,7 +94,16 @@ export default function Message({
                             ? false
                             : true
                     }
-                > 
+                >
+                    <ContextMenuItem
+                        onClick={() => {
+                            setMessageAction("edit");
+                            setMessageEditing(metadata)
+                        }}
+                    >
+                        <Pencil />
+                        Edit
+                    </ContextMenuItem>
                     <ContextMenuItem
                         onClick={() => deleteMessage(metadata)}
                         variant="destructive"

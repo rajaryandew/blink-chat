@@ -27,3 +27,19 @@ export async function deleteMessageRecord(messageId:number){
         throw mapDatabaseError(error)
     }
 }
+
+export async function updateMessageRecord(originalMessage:Message,newText:string){
+    try {
+        const updatedMessage = await prisma.message.update({
+            where:{
+                id:originalMessage.id
+            },
+            data:{
+                text:newText
+            }
+        })
+        return updatedMessage
+    } catch (error) {
+        throw mapDatabaseError(error)
+    }
+}

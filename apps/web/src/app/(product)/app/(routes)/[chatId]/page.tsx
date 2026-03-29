@@ -1,7 +1,11 @@
 "use client";
 import { useParams } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
-import { ChatListContext, MessageTabContext } from "../../contexts";
+import {
+    ChatListContext,
+    MessageEditProvider,
+    MessageTabContext,
+} from "../../contexts";
 import { authClient } from "@/lib/auth/auth-client";
 import Message from "../../_app-components/chat/message";
 import ChatHeader from "../../_app-components/chat/chat-header";
@@ -11,7 +15,11 @@ import MessagesArea from "../../_app-components/chat/messages-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ChatLoading from "../../_app-components/chat/loading/chat-loading";
 import { useForm } from "react-hook-form";
-import { CreateMessageInput, createMessageSchema } from "@repo/schema/message";
+import {
+    CreateMessageInput,
+    createMessageSchema,
+    Message as MessageType,
+} from "@repo/schema/message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { socket } from "@/lib/socket/socket";
 
@@ -24,29 +32,28 @@ export default function ChatPage() {
     const chat = chatList?.find((c) => c.id === chatId);
     const isMobile = useIsMobile();
     const { data: session } = authClient.useSession();
-
     const form = useForm<CreateMessageInput>({
         resolver: zodResolver(createMessageSchema),
     });
-    const selfParticipantId = form.watch('chatParticipantId')
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+    const selfParticipantId = form.watch("chatParticipantId");
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    if(isSomeoneTyping){
-        if(timeoutRef.current){
-            clearTimeout(timeoutRef.current)
-            timeoutRef.current = null
+    if (isSomeoneTyping) {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
         }
-        timeoutRef.current = setTimeout(() => setIsSomeoneTyping(false),2000)
+        timeoutRef.current = setTimeout(() => setIsSomeoneTyping(false), 2000);
     }
 
     useEffect(() => {
         setIsMessageTabOpen(false);
 
-        socket.on("message:created",(response) => {
-            if(response.success && response.data.chatId === chat?.id){
-                setIsSomeoneTyping(false)
+        socket.on("message:created", (response) => {
+            if (response.success && response.data.chatId === chat?.id) {
+                setIsSomeoneTyping(false);
             }
-        })
+        });
 
         socket.on("chat:typing", (personTyping) => {
             if (
@@ -61,7 +68,7 @@ export default function ChatPage() {
         return () => {
             socket.off("chat:typing");
         };
-    }, [isMobile,selfParticipantId]);
+    }, [isMobile, selfParticipantId]);
 
     if (isLoading) {
         return <ChatLoading />;
@@ -92,8 +99,16 @@ export default function ChatPage() {
     return (
         <main className="w-full h-dvh flex flex-col">
             <ChatHeader name={name} />
-            <MessagesArea isSomeoneTyping={isSomeoneTyping} messages={messages} />
-            <SendMessageForm chat={chat} sendMessageForm={form} />
+            <MessageEditProvider>
+                <MessagesArea
+                    isSomeoneTyping={isSomeoneTyping}
+                    messages={messages}
+                />
+                <SendMessageForm
+                    chat={chat}
+                    sendMessageForm={form}
+                />
+            </MessageEditProvider>
         </main>
     );
 }

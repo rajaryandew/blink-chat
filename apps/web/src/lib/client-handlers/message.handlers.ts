@@ -1,6 +1,6 @@
 "use client";
-import { CreateMessageInput } from "@repo/schema/message";
-import { createMessage } from "../socket/handlers/chat.socket";
+import { CreateMessageInput, Message } from "@repo/schema/message";
+import { createMessage, updateMessage } from "../socket/handlers/chat.socket";
 import { socket } from "../socket/socket";
 import { toast } from "sonner";
 import { Dispatch, SetStateAction } from "react";
@@ -8,6 +8,11 @@ import { Chat } from "@repo/schema/chat";
 
 export function handleCreateMessage(input: CreateMessageInput) {
     createMessage(input);
+}
+
+export function handleEditMessage(message:Message | null,newText:string){
+    if(!message) return
+    updateMessage(message,newText)
 }
 
 export function handleMessageEvents(
@@ -40,14 +45,14 @@ export function handleMessageEvents(
         setChatList((v) => {
             if (!v) return v;
             const chats = v.map((c) => {
-                if (c.id === response.message.chatId) {
+                if (c.id == response.data.chatId) {
                     const isReplyTo = c.messages.find(
-                        (v) => v.replyTo === response.message.id,
+                        (v) => v.replyTo === response.data.id,
                     );
                     isReplyTo && (isReplyTo.replyTo = null);
 
                     const filteredMessages = c.messages.filter(
-                        (v) => v.id !== response.message.id,
+                        (v) => v.id !== response.data.id,
                     );
                     c.messages = filteredMessages;
                 }
@@ -56,4 +61,26 @@ export function handleMessageEvents(
             return chats;
         });
     });
+
+    socket.on("message:edited",(response) => {
+        if(response.success === false){
+            toast.error("Cant edit message!!")
+            return
+        }
+
+        setChatList((v) => {
+            if(!v) return v
+            const chats = v.map((c) => {
+                if(c.id === response.data.chatId){
+                    c.messages.map(m => {
+                        if(m.id === response.data.id) m.text = response.data.text
+                        return m
+                    })
+                }
+                return c
+            })
+            return chats
+        })
+    })
+
 }
