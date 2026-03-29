@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Pencil, Reply, Trash } from "lucide-react";
+import { Copy, Pencil, Reply, Trash } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import { UseFormSetValue } from "react-hook-form";
 import {
@@ -12,7 +12,9 @@ import { Chat } from "@repo/schema/chat";
 import {
     ContextMenu,
     ContextMenuContent,
+    ContextMenuGroup,
     ContextMenuItem,
+    ContextMenuSeparator,
     ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { MessageReplied } from "./message-replied";
@@ -85,32 +87,45 @@ export default function Message({
                         />
                     </motion.div>
                 </ContextMenuTrigger>
-                <ContextMenuContent
-                    hidden={
-                        metadata.chatParticipantId ===
-                        chat.chatParticipants.find(
-                            (v) => v.userId === session?.user.id!,
-                        )?.id
-                            ? false
-                            : true
-                    }
-                >
+                <ContextMenuContent>
                     <ContextMenuItem
-                        onClick={() => {
-                            setMessageAction("edit");
-                            setMessageEditing(metadata)
+                        onClick={async () => {
+                            await navigator.clipboard.writeText(metadata.text);
                         }}
                     >
-                        <Pencil />
-                        Edit
+                        <Copy />
+                        Copy
                     </ContextMenuItem>
-                    <ContextMenuItem
-                        onClick={() => deleteMessage(metadata)}
-                        variant="destructive"
+
+                    <ContextMenuGroup
+                        hidden={
+                            metadata.chatParticipantId ===
+                            chat.chatParticipants.find(
+                                (v) => v.userId === session?.user.id!,
+                            )?.id
+                                ? false
+                                : true
+                        }
                     >
-                        <Trash />
-                        Delete
-                    </ContextMenuItem>
+                        <ContextMenuSeparator />
+
+                        <ContextMenuItem
+                            onClick={() => {
+                                setMessageAction("edit");
+                                setMessageEditing(metadata);
+                            }}
+                        >
+                            <Pencil />
+                            Edit
+                        </ContextMenuItem>
+                        <ContextMenuItem
+                            onClick={() => deleteMessage(metadata)}
+                            variant="destructive"
+                        >
+                            <Trash />
+                            Delete
+                        </ContextMenuItem>
+                    </ContextMenuGroup>
                 </ContextMenuContent>
             </ContextMenu>
         </div>
