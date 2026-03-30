@@ -3,13 +3,42 @@ import { prisma } from "../prisma";
 import { mapDatabaseError } from "../db-errors.conditionals";
 import { getProfile, getProfileByUsername } from "./profile.db";
 import { DatabaseError } from "@repo/error";
-import { ChatParticipant } from "@repo/schema/chat-participant";
-import { Message } from "@repo/schema/message";
+import { PrismaClientKnownRequestError } from "../../generated/prisma/internal/prismaNamespace";
 
 export async function createChatRecord(chatInput: CreateChatInput) {
     try {
         const person = await getProfileByUsername(chatInput.username);
         const self = await getProfile(chatInput.self_userId);
+        const isChatAlreadyExists =
+            chatInput.isGroup === false
+                ? await prisma.chat.findFirst({
+                      where: {
+                          AND: [
+                              {
+                                  chatParticipants: {
+                                      some: {
+                                          userId: self.userId,
+                                      },
+                                  },
+                              },
+                              {
+                                  chatParticipants: {
+                                      some: {
+                                          userId: person.userId,
+                                      },
+                                  },
+                              },
+                          ],
+                      },
+                  })
+                : null;
+        if (isChatAlreadyExists) {
+            console.log("Hello");
+            throw new PrismaClientKnownRequestError("CHAT_ALREADY_EXISTS", {
+                code: "P2002",
+                clientVersion: "",
+            });
+        }
         const chat: Chat = await prisma.chat.create({
             data: {
                 chatParticipants: {
@@ -27,10 +56,10 @@ export async function createChatRecord(chatInput: CreateChatInput) {
                     },
                 },
             },
-            include:{
-                chatParticipants:true,
-                messages:true
-            }
+            include: {
+                chatParticipants: true,
+                messages: true,
+            },
         });
         return chat;
     } catch (err) {
@@ -45,24 +74,23 @@ export async function createChatRecord(chatInput: CreateChatInput) {
 
 export async function fetchChatRecords(userId: string) {
     try {
-        const chats:Chat[] =
-            await prisma.chat.findMany({
-                where: {
-                    chatParticipants: {
-                        some: {
-                            userId,
-                        },
+        const chats: Chat[] = await prisma.chat.findMany({
+            where: {
+                chatParticipants: {
+                    some: {
+                        userId,
                     },
                 },
+            },
 
-                include: {
-                    chatParticipants: true,
-                    messages:true
-                },
-            });
+            include: {
+                chatParticipants: true,
+                messages: true,
+            },
+        });
         return chats;
     } catch (error) {
-        console.log(error)
+        console.log(error);
         throw mapDatabaseError(error);
     }
 }
