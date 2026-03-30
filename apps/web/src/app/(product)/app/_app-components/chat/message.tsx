@@ -1,9 +1,8 @@
 "use client";
-
 import { cn } from "@/lib/utils";
 import { Copy, Pencil, Reply, Trash } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "motion/react";
-import { UseFormSetValue } from "react-hook-form";
+import { UseFormSetFocus, UseFormSetValue } from "react-hook-form";
 import {
     CreateMessageInput,
     Message as MessageType,
@@ -30,11 +29,13 @@ export default function Message({
     chat,
     alignment,
     setReplyAction,
+    setFocusAction
 }: {
     metadata: MessageType;
     chat: Chat;
     alignment: "left" | "right"; // left: Received, right: Sent
     setReplyAction: UseFormSetValue<CreateMessageInput>;
+    setFocusAction:UseFormSetFocus<{text:string}>
 }) {
     const align = `${alignment === "left" ? "items-start" : "items-end"}`;
     const {
@@ -68,7 +69,10 @@ export default function Message({
                             left: 0,
                             right: 0,
                         }}
-                        onDragEnd={() => setReplyAction("replyTo", metadata.id)}
+                        onDragEnd={() => {
+                            setReplyAction("replyTo", metadata.id)
+                            setFocusAction("text")
+                        }}
                         dragElastic={0.03}
                         dragDirectionLock
                         style={{ x }}

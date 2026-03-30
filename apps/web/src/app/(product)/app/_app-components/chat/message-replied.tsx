@@ -5,11 +5,11 @@ import { Message } from "@repo/schema/message";
 export function MessageReplied({
     metadata,
     chat,
-    alignment
+    alignment,
 }: {
     metadata: Message;
     chat: Chat;
-    alignment:"left" | "right"
+    alignment:"left" | "right";
 }) {
     return (
         <div

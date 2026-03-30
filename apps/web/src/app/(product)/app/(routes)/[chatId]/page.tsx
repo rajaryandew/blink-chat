@@ -18,7 +18,6 @@ import { useForm } from "react-hook-form";
 import {
     CreateMessageInput,
     createMessageSchema,
-    Message as MessageType,
 } from "@repo/schema/message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { socket } from "@/lib/socket/socket";
@@ -32,9 +31,11 @@ export default function ChatPage() {
     const chat = chatList?.find((c) => c.id === chatId);
     const isMobile = useIsMobile();
     const { data: session } = authClient.useSession();
+
     const form = useForm<CreateMessageInput>({
         resolver: zodResolver(createMessageSchema),
     });
+
     const selfParticipantId = form.watch("chatParticipantId");
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -87,6 +88,7 @@ export default function ChatPage() {
                 : "left";
         return (
             <Message
+                setFocusAction={form.setFocus}
                 chat={chat}
                 metadata={message}
                 alignment={alignment}
