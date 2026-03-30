@@ -74,6 +74,7 @@ export default function Message({
                         style={{ x }}
                         animate={{ scale: messageSize }}
                     >
+                        <p className="dark:text-slate-400 mt-1" hidden={metadata.isEdited === false}>Edited</p>
                         <MessageReplied
                             alignment={alignment}
                             chat={chat}

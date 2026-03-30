@@ -35,7 +35,8 @@ export async function updateMessageRecord(originalMessage:Message,newText:string
                 id:originalMessage.id
             },
             data:{
-                text:newText
+                text:newText,
+                isEdited:true
             }
         })
         return updatedMessage

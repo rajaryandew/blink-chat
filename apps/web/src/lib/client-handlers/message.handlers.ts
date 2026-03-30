@@ -73,7 +73,10 @@ export function handleMessageEvents(
             const chats = v.map((c) => {
                 if(c.id === response.data.chatId){
                     c.messages.map(m => {
-                        if(m.id === response.data.id) m.text = response.data.text
+                        if(m.id === response.data.id) {
+                            m.text = response.data.text
+                            m.isEdited = true
+                        }
                         return m
                     })
                 }

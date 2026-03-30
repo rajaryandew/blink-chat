@@ -16,16 +16,16 @@ datasource db {
 // <auth>
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  profile       Profile?
-  sessions      Session[]
-  accounts      Account[]
+  id               String            @id
+  name             String
+  email            String
+  emailVerified    Boolean           @default(false)
+  image            String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  profile          Profile?
+  sessions         Session[]
+  accounts         Account[]
   chatParticipants ChatParticipant[]
 
   @@unique([email])
@@ -83,12 +83,12 @@ model Verification {
 // </auth>
 
 model Profile {
-  id                String             @id @default(uuid())
-  userId            String             @unique
-  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  username          String             @unique
-  displayName       String?
-  profilePic        String?
+  id          String  @id @default(uuid())
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username    String  @unique
+  displayName String?
+  profilePic  String?
 
   @@map("profile")
 }
@@ -103,29 +103,28 @@ model Chat {
 }
 
 model ChatParticipant {
-  id Int @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   nickname String
 
   chatId String
   chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
-
   userId String
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   messages Message[]
 
-@@unique([chatId,userId])
-
+  @@unique([chatId, userId])
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
-  text      String
-  timestamp DateTime
-  replyTo   Int?
-  replyMessage Message? @relation("Reply",fields: [replyTo],references: [id])
-  replies Message[] @relation("Reply")
+  id           Int       @id @default(autoincrement())
+  text         String
+  timestamp    DateTime
+  isEdited     Boolean  @default(false)
+  replyTo      Int?
+  replyMessage Message?  @relation("Reply", fields: [replyTo], references: [id])
+  replies      Message[] @relation("Reply")
 
   chatId String
   chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)

@@ -7,6 +7,7 @@ export const messageSchema = z.object({
     chatId: z.uuid(),
     chatParticipantId: z.int(),
     replyTo: z.int().nullish(),
+    isEdited:z.boolean().nullish()
 });
 
 export type Message = z.infer<typeof messageSchema>;
