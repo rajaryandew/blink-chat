@@ -33,7 +33,6 @@ export async function createChatRecord(chatInput: CreateChatInput) {
                   })
                 : null;
         if (isChatAlreadyExists) {
-            console.log("Hello");
             throw new PrismaClientKnownRequestError("CHAT_ALREADY_EXISTS", {
                 code: "P2002",
                 clientVersion: "",
@@ -90,7 +89,19 @@ export async function fetchChatRecords(userId: string) {
         });
         return chats;
     } catch (error) {
-        console.log(error);
         throw mapDatabaseError(error);
+    }
+}
+
+export async function deleteChatRecord(chatId:string){
+    try {
+        await prisma.chat.delete({
+            where:{
+                id:chatId
+            }
+        })
+        return chatId
+    } catch (error) {
+        throw mapDatabaseError(error)
     }
 }

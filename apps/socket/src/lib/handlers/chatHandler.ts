@@ -1,5 +1,5 @@
 import { Chat, CreateChatInput } from "@repo/schema/chat";
-import { createChatRecord } from "@repo/database/chat";
+import { createChatRecord, deleteChatRecord } from "@repo/database/chat";
 
 import { ServerType, SocketType } from "../..";
 import { AppError, DatabaseError } from "@repo/error";
@@ -50,6 +50,21 @@ export async function registerChatHandlers(socket: SocketType, io: ServerType) {
     });
 
     socket.on("chat:typing", (personTyping) => {
-        io.to(`${personTyping.chatId}`).emit("chat:typing",personTyping)
+        io.to(`${personTyping.chatId}`).emit("chat:typing", personTyping);
+    });
+
+    socket.on("chat:delete", async (chatId) => {
+        try {
+            await deleteChatRecord(chatId);
+            io.to(chatId).emit("chat:deleted", {
+                success: true,
+                data: { chatId },
+            });
+        } catch (error) {
+            socket.emit("chat:deleted", {
+                success: false,
+                error: { message: "ERROR" },
+            });
+        }
     });
 }

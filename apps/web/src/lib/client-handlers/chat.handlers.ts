@@ -6,6 +6,7 @@ import { createChat } from "../socket/handlers/chat.socket";
 import { Chat, CreateChatInput } from "@repo/schema/chat";
 import { connectToRooms, socket } from "../socket/socket";
 import { Dispatch, SetStateAction } from "react";
+import { redirect, RedirectType } from "next/navigation";
 
 export async function handleGetChats() {
     const response = await getChats();
@@ -65,9 +66,23 @@ export async function handleChatCreated(
         return setChatList((v) => {
             const data = [response.data, ...(v ?? [])];
 
-            connectToRooms(data)
+            connectToRooms(data);
 
-            return data
+            return data;
         });
+    });
+
+    socket.on("chat:deleted", (response) => {
+        if (response.success === false) {
+            return toast.error("Can't delete message!! Try again later");
+        }
+
+        setChatList((v) => {
+            if (!v) return v;
+            const chats = v.filter(chat => chat.id !== response.data.chatId);
+            return chats;
+        });
+        toast.success("Chat deleted!!")
+        redirect("/app",RedirectType.replace)
     });
 }

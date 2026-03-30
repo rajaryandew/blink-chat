@@ -15,10 +15,7 @@ import MessagesArea from "../../_app-components/chat/messages-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ChatLoading from "../../_app-components/chat/loading/chat-loading";
 import { useForm } from "react-hook-form";
-import {
-    CreateMessageInput,
-    createMessageSchema,
-} from "@repo/schema/message";
+import { CreateMessageInput, createMessageSchema } from "@repo/schema/message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { socket } from "@/lib/socket/socket";
 
@@ -100,16 +97,18 @@ export default function ChatPage() {
 
     return (
         <main className="w-full h-dvh flex flex-col">
-            <ChatHeader name={name} />
+            <ChatHeader
+                action={() => {
+                    socket.emit("chat:delete", chat.id);
+                }}
+                name={name}
+            />
             <MessageEditProvider>
                 <MessagesArea
                     isSomeoneTyping={isSomeoneTyping}
                     messages={messages}
                 />
-                <SendMessageForm
-                    chat={chat}
-                    sendMessageForm={form}
-                />
+                <SendMessageForm chat={chat} sendMessageForm={form} />
             </MessageEditProvider>
         </main>
     );
