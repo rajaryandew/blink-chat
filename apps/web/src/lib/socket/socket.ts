@@ -7,6 +7,7 @@ import {
 } from "@repo/schema/socket";
 import { registerAuthEvents } from "./handlers/auth.socket";
 import { Chat } from "@repo/schema/chat";
+import { toast } from "sonner";
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
     SOCKET_SERVER_URL,
@@ -20,6 +21,13 @@ socket.on("connect", () => {
 socket.on("disconnect", () => {
     console.log("disconnected");
 });
+
+socket.on("connect_error",() => {
+    toast.error("Failed connecting to the server!!! Trying again!")
+    setTimeout(() => {
+        socket.connect()
+    },4000)
+})
 
 export function socketConnect(userId: string) {
     socket.auth = { userId };
