@@ -10,6 +10,6 @@ export type ChatParticipant = z.infer<typeof chatParticipantSchema>
 
 export const createChatParticipantSchema = chatParticipantSchema.pick({
     chatId:true,
-    profileId:true
+    userId:true
 })
 export type CreateChatParticipantInput = z.infer<typeof createChatParticipantSchema>
