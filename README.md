@@ -1,145 +1,160 @@
 # Blink Chat
 
-A modern, real-time chat application built with Next.js, Socket.io, and TypeScript. Experience instant messaging with a sleek, responsive interface and real-time synchronization across all connected clients.
+A real-time chat application built to deeply explore WebSockets, system design, and scalable frontend-backend architecture.
 
-**Live Demo:** https://blink-chat-web.vercel.app
+**Live Demo:** [https://blink-chat-web.vercel.app](https://blink-chat-web.vercel.app)
 
-## ✨ Features
+---
 
-- **Real-time Messaging** - Instant message delivery powered by Socket.io
-- **User Authentication** - Secure authentication with better-auth
-- **User Avatars** - Profile pictures and avatar support
-- **Responsive Design** - Mobile-friendly interface built with Tailwind CSS
-- **Dark Mode** - Seamless theme switching with next-themes
-- **Type Safe** - 100% TypeScript for maximum code safety
-- **Monorepo Architecture** - Scalable project structure with Turbo
-- **Database Backed** - PostgreSQL with Prisma ORM
+## 🧠 Why I Built This
 
-## 🚀 Quick Start
+This project was built to understand how real-time systems actually work under the hood — not just sending messages, but handling synchronization, connections, and data flow between multiple clients.
 
-### Prerequisites
+Instead of focusing on UI-heavy features, the goal was to design a clean, scalable architecture for real-time communication.
 
-- Node.js 18+
-- pnpm 10.28.1 (or npm/yarn)
-- PostgreSQL database
+---
 
-### Installation
+## ✨ Core Features
 
-1. Clone the repository
-```
-git clone https://github.com/rajaryandew/blink-chat.git
-cd blink-chat
-```
+* **Real-time Messaging** — Instant message delivery using WebSockets
+* **Authentication** — Secure user authentication system
+* **Responsive UI** — Works smoothly across devices
+* **Dark Mode** — Theme switching support
+* **Type Safety** — Fully written in TypeScript
+* **Persistent Storage** — Messages stored in PostgreSQL
 
-2. Install dependencies
-```
-pnpm install
-```
+---
 
-3. Set up environment variables
-```
-# Create .env.local in apps/web
-cp apps/web/.env.example apps/web/.env.local
+## 🏗️ Architecture Highlights
 
-# Create .env in apps/socket
-cp apps/socket/.env.example apps/socket/.env
-```
+* **Separated WebSocket server** from the frontend for better scalability
+* **Monorepo structure** using Turbo for organized and efficient development
+* **Shared packages** for types, schemas, and utilities across apps
+* **Database layer abstraction** using Prisma ORM
+* Designed with **real-world scalability patterns in mind**, not just a single-server setup
 
-Configure these variables:
-- DATABASE_URL - PostgreSQL connection string
-- BETTER_AUTH_SECRET - Authentication secret key
-- SOCKET_SERVER_URL - WebSocket server URL (localhost:3001 for development)
-
-4. Set up the database
-```
-pnpm run db:push
-```
-
-5. Start development servers
-```
-pnpm dev
-```
-
-- Web app: http://localhost:3000
-- Socket server: http://localhost:3001
+---
 
 ## 📁 Project Structure
 
 ```
 blink-chat/
 ├── apps/
-│   ├── web/              # Next.js frontend application
-│   ├── socket/           # Socket.io server for real-time messaging
+│   ├── web/              # Next.js frontend
+│   ├── socket/           # WebSocket server (Socket.io)
 │   └── docs/             # Documentation app
 ├── packages/
-│   ├── database/         # Prisma schemas & database utilities
-│   ├── schema/           # Shared TypeScript types & validation
+│   ├── database/         # Prisma schema & DB utilities
+│   ├── schema/           # Shared validation & types
 │   ├── error/            # Error handling utilities
-│   ├── eslint-config/    # Shared ESLint configuration
-│   └── typescript-config/# Shared TypeScript configuration
-└── turbo.json            # Turborepo configuration
+│   ├── eslint-config/    # Shared lint rules
+│   └── typescript-config/# Shared TS config
+└── turbo.json
 ```
 
-## 🛠️ Available Scripts
+---
 
-From the root directory:
+## 🛠️ Tech Stack
+
+### Frontend
+
+* Next.js
+* React
+* Tailwind CSS
+* Radix UI
+* Socket.io Client
+
+### Backend
+
+* Node.js
+* Socket.io
+* Prisma
+
+### Database
+
+* PostgreSQL
+
+### Developer Experience
+
+* TypeScript
+* Turborepo
+* ESLint + Prettier
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+* Node.js 18+
+* pnpm / npm / yarn
+* PostgreSQL database
+
+### Setup
+
+```bash
+git clone https://github.com/rajaryandew/blink-chat.git
+cd blink-chat
+pnpm install
+```
+
+### Environment Variables
+
+Create:
+
+* `apps/web/.env.local`
+* `apps/socket/.env`
+
+Add:
 
 ```
-# Development
-pnpm dev          # Start all apps in development mode
-pnpm dev --filter=web   # Start only the web app
-
-# Building
-pnpm build        # Build all apps and packages
-pnpm build --filter=socket  # Build specific app
-
-# Code Quality
-pnpm lint         # Run ESLint across the monorepo
-pnpm format       # Format code with Prettier
-pnpm check-types  # Run TypeScript type checking
+DATABASE_URL=
+BETTER_AUTH_SECRET=
+SOCKET_SERVER_URL=
 ```
 
-## 🏗️ Tech Stack
+### Run the App
 
-**Frontend:**
-- Next.js 16 - React framework
-- React 19 - UI library
-- Tailwind CSS 4 - Styling
-- Radix UI - Accessible components
-- React Hook Form - Form handling
-- Socket.io Client - Real-time communication
+```bash
+pnpm dev
+```
 
-**Backend:**
-- Socket.io - WebSocket server
-- Node.js - JavaScript runtime
-- Prisma - ORM & database management
-- Better Auth - Authentication
+* Frontend → [http://localhost:3000](http://localhost:3000)
+* Socket Server → [http://localhost:3001](http://localhost:3001)
 
-**Database:**
-- PostgreSQL - Relational database
+---
 
-**Developer Experience:**
-- TypeScript - Type safety
-- Turbo - Monorepo management
-- ESLint - Code linting
-- Prettier - Code formatting
+## ⚙️ Available Scripts
 
-## 📖 Getting Help
+```bash
+pnpm dev              # run all apps
+pnpm build            # build all apps
+pnpm lint             # lint code
+pnpm format           # format code
+pnpm check-types      # type checking
+```
 
-- Check out the Next.js documentation: https://nextjs.org/docs
-- Read the Socket.io docs: https://socket.io/docs/
-- Review Prisma documentation: https://www.prisma.io/docs/
+---
 
-## 📝 License
+## 📌 Notes
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project focuses on **core system design and real-time communication**, not full product-level features like advanced profiles, notifications, or complex UI flows.
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-For major changes, please open an issue first to discuss what you would like to change.
+---
 
 ## 👨‍💻 Author
 
-Created by @rajaryandew (https://github.com/rajaryandew)
+Built by
+[https://github.com/rajaryandew](https://github.com/rajaryandew)
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 🤝 Contributions
+
+Feel free to open issues or submit PRs if you want to improve anything.
