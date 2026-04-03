@@ -27,6 +27,6 @@ export interface ClientToServerEvents {
     "chat:typing": (personTyping: ChatTyping) => void;
     "message:create": (messageInput: CreateMessageInput) => void;
     "message:delete": (message: Message) => void;
-    "message:edit": (orignalMessage: Message, newText: string) => void;
+    "message:edit": (originalMessage: Message, newText: string) => void;
     "chat:connect": (chatList: Chat[]) => void;
 }

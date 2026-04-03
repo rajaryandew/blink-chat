@@ -4,13 +4,20 @@ import { mapDatabaseError } from "../db-errors.conditionals";
 
 export async function createProfile(
     profileInput: CreateProfileInput,
-    userId: string
+    userId: string,
 ) {
     try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+        });
+
         const profile: Profile = await prisma.profile.create({
             data: {
                 userId,
                 ...profileInput,
+                profilePic: user?.image,
             },
         });
         return profile;
@@ -27,21 +34,21 @@ export async function getProfile(userId: string) {
                 userId,
             },
         });
-        return profile
+        return profile;
     } catch (err) {
-        throw mapDatabaseError(err)
+        throw mapDatabaseError(err);
     }
 }
 
-export async function getProfileByUsername(username:string){
+export async function getProfileByUsername(username: string) {
     try {
-        const profile:Profile | null = await prisma.profile.findUniqueOrThrow({
-            where:{
-                username
-            }
-        })
-        return profile
+        const profile: Profile | null = await prisma.profile.findUniqueOrThrow({
+            where: {
+                username,
+            },
+        });
+        return profile;
     } catch (error) {
-        throw mapDatabaseError(error)
+        throw mapDatabaseError(error);
     }
 }

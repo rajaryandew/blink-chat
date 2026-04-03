@@ -3,7 +3,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserCircle } from "@/components/ui/icons";
 import { Chat } from "@repo/schema/chat";
 import Link from "next/link";
-import { getPersonName } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { authClient } from "@/lib/auth/auth-client";
+import { getUserAvatar } from "@/lib/server-actions/user..actions";
 
 export function ChatItem({
     metadata,
@@ -12,6 +14,8 @@ export function ChatItem({
     metadata: Chat;
     name: string | undefined;
 }) {
+
+    const {data:session} = authClient.useSession()
 
     const lastMessage =
         metadata.messages.length >= 1
@@ -25,11 +29,20 @@ export function ChatItem({
         ? formatDistance(Date.now(), lastMessage.timestamp)
         : null;
 
+    const [avatar,setAvatar] = useState<string | undefined>()
+
+    useEffect(() => {
+        ( async () => {
+            const avatar = await getUserAvatar(session?.user.id)
+            setAvatar(avatar?.image || undefined)
+        })()
+    },[session])
+
     return (
         <Link prefetch href={`/app/${metadata.id}`} >
             <div className="h-18 flex items-center gap-2">
                 <Avatar className="size-12 grid place-items-center ">
-                    <AvatarImage src={undefined} />
+                    <AvatarImage src={avatar || undefined} />
                     <AvatarFallback asChild>
                         <UserCircle />
                     </AvatarFallback>
