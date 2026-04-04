@@ -19,7 +19,7 @@ socket.on("connect", () => {
 });
 
 socket.io.on("reconnect",(a) => {
-    toast.success("Connected to the server!!")
+    toast.success("Connected to the server!!",{closeButton:true})
 })
 
 socket.on("disconnect", () => {
@@ -27,10 +27,14 @@ socket.on("disconnect", () => {
 });
 
 socket.on("connect_error",() => {
-    toast.error("Failed connecting to the server!!! Trying again!")
+    toast.error("Failed connecting to the server!!! Trying again!",{closeButton:true,duration:1000})
     setTimeout(() => {
         socket.connect()
     },2000)
+})
+
+socket.on("rate:limited",() => {
+    toast.warning("Too much requests sent!!! Try after sometime")
 })
 
 export function socketConnect(userId: string) {

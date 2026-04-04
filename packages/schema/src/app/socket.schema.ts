@@ -18,6 +18,7 @@ export interface ServerToClientEvents {
     "message:created": (response: SocketResponse<Message>) => void;
     "message:deleted": (response: SocketResponse<Message>) => void;
     "message:edited": (response: SocketResponse<Message>) => void;
+    "rate:limited": () => void
     unauthorized: () => void;
 }
 
