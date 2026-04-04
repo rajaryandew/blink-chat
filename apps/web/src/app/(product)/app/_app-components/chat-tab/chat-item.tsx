@@ -33,7 +33,8 @@ export function ChatItem({
 
     useEffect(() => {
         ( async () => {
-            const avatar = await getUserAvatar(session?.user.id)
+            const personUserId = metadata.chatParticipants.find(c => c.userId !== session?.user.id)?.userId
+            const avatar = await getUserAvatar(personUserId)
             setAvatar(avatar?.image || undefined)
         })()
     },[session])

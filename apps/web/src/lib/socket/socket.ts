@@ -18,6 +18,10 @@ socket.on("connect", () => {
     console.log("connected");
 });
 
+socket.io.on("reconnect",(a) => {
+    toast.success("Connected to the server!!")
+})
+
 socket.on("disconnect", () => {
     console.log("disconnected");
 });
@@ -26,7 +30,7 @@ socket.on("connect_error",() => {
     toast.error("Failed connecting to the server!!! Trying again!")
     setTimeout(() => {
         socket.connect()
-    },4000)
+    },2000)
 })
 
 export function socketConnect(userId: string) {
