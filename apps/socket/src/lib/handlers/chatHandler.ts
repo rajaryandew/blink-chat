@@ -1,5 +1,5 @@
 import { Chat, CreateChatInput } from "@repo/schema/chat";
-import { createChatRecord, deleteChatRecord } from "@repo/database/chat";
+import { createChatRecord, deleteChatRecord, fetchChatParticipantsByChatId, fetchChatRecords } from "@repo/database/chat";
 
 import { ServerType, SocketType } from "../..";
 import { AppError, DatabaseError } from "@repo/error";
@@ -55,6 +55,9 @@ export async function registerChatHandlers(socket: SocketType, io: ServerType) {
 
     socket.on("chat:delete", async (chatId) => {
         try {
+            const chatParticipants = await fetchChatParticipantsByChatId(chatId)
+            if(!(chatParticipants.find(p => p.userId === socket.handshake.auth.userId))) throw new Error("UNAUTHORIZED")
+
             await deleteChatRecord(chatId);
             io.to(chatId).emit("chat:deleted", {
                 success: true,

@@ -37,6 +37,9 @@ export function MessageTabProvider({
     );
 }
 
+
+
+
 // chatListContext
 type ChatListContextType = {
     chatList: Chat[] | null;
@@ -73,6 +76,10 @@ export function ChatListProvider({ children }: { children: React.ReactNode }) {
     );
 }
 
+
+
+
+// Chat Search
 type ChatSearchContextType = {
     searchValue: string;
     setSearchValue: Dispatch<SetStateAction<string>>;
@@ -95,6 +102,10 @@ export function ChatSearchProvider({
     );
 }
 
+
+
+
+// Message edit
 type MessageEditContextType = {
     messageAction: "send" | "edit";
     setMessageAction: Dispatch<SetStateAction<"send" | "edit">>;

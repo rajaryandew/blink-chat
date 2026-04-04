@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { CreateMessageInput, createMessageSchema } from "@repo/schema/message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { socket } from "@/lib/socket/socket";
+import { getUserAvatar } from "@/lib/server-actions/user.actions";
 
 export default function ChatPage() {
     const { chatId } = useParams();
@@ -25,6 +26,7 @@ export default function ChatPage() {
     const { chatList, isLoading } = useContext(ChatListContext)!;
     const { setIsMessageTabOpen } = useContext(MessageTabContext)!;
     const [isSomeoneTyping, setIsSomeoneTyping] = useState(false);
+    const [avatar, setAvatar] = useState<string | undefined>()
     const chat = chatList?.find((c) => c.id === chatId);
     const isMobile = useIsMobile();
     const { data: session } = authClient.useSession();
@@ -45,6 +47,13 @@ export default function ChatPage() {
     }
 
     useEffect(() => {
+
+        (async () => {
+            const personUserId = chat?.chatParticipants.find(p => p.userId !== session?.user.id)?.userId
+            const avatar = await getUserAvatar(personUserId)
+            setAvatar(avatar?.image || undefined)
+        })()
+
         setIsMessageTabOpen(false);
 
         socket.on("message:created", (response) => {
@@ -98,6 +107,7 @@ export default function ChatPage() {
     return (
         <main className="w-full h-dvh flex flex-col">
             <ChatHeader
+                avatar={avatar}
                 action={() => {
                     socket.emit("chat:delete", chat.id);
                 }}

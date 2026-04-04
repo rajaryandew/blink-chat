@@ -5,7 +5,7 @@ import { Chat } from "@repo/schema/chat";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth/auth-client";
-import { getUserAvatar } from "@/lib/server-actions/user..actions";
+import { getUserAvatar } from "@/lib/server-actions/user.actions";
 
 export function ChatItem({
     metadata,

@@ -8,7 +8,6 @@ import { handleChatCreated } from "@/lib/client-handlers/chat.handlers";
 import { socket } from "@/lib/socket/socket";
 import { ChatItemLoading } from "./chat-list-loading";
 import { getPersonName } from "@/lib/utils";
-import { getUserAvatar } from "@/lib/server-actions/user..actions";
 
 export function ChatList() {
     const { data: session, isPending } = authClient.useSession();

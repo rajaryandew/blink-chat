@@ -22,7 +22,7 @@ export function ChatTab() {
         <Sheet open={isOpen} onOpenChange={setIsOpen} modal={false}>
             <AnimatePresence>
                 <SheetContent
-                    className="absolute inset-0 w-screen sm:w-[400px]"
+                    className="absolute inset-0 w-screen sm:w-100"
                     side="left"
                     onOpenAutoFocus={(e) => e.preventDefault()}
                     suppressHydrationWarning

@@ -105,3 +105,16 @@ export async function deleteChatRecord(chatId:string){
         throw mapDatabaseError(error)
     }
 }
+
+export async function fetchChatParticipantsByChatId(chatId:string){
+    try {
+        const chatParticipants = await prisma.chatParticipant.findMany({
+            where:{
+                chatId
+            }
+        })
+        return chatParticipants
+    } catch (error) {
+        throw mapDatabaseError(error)
+    }
+}

@@ -5,6 +5,7 @@ import {
 } from "@repo/database/message";
 import { ServerType, SocketType } from "../..";
 import { AppError } from "@repo/error";
+import { isChatParticipantAuthorized } from "../utils";
 
 export async function registerMessageHandlers(
     socket: SocketType,
@@ -12,6 +13,8 @@ export async function registerMessageHandlers(
 ) {
     socket.on("message:create", async (input) => {
         try {
+            await isChatParticipantAuthorized(socket,input.chatParticipantId)
+
             const message = await createMessageRecord(input);
             io.to(message.chatId).emit("message:created", {
                 success: true,
@@ -28,6 +31,8 @@ export async function registerMessageHandlers(
 
     socket.on("message:delete", async (message) => {
         try {
+            await isChatParticipantAuthorized(socket,message.chatParticipantId)
+
             await deleteMessageRecord(message.id);
             io.to(message.chatId).emit("message:deleted", {
                 success: true,
@@ -44,6 +49,8 @@ export async function registerMessageHandlers(
 
     socket.on("message:edit", async (originalMessage, newText) => {
         try {
+            await isChatParticipantAuthorized(socket,originalMessage.chatParticipantId)
+
             const updatedMessage = await updateMessageRecord(
                 originalMessage,
                 newText,
